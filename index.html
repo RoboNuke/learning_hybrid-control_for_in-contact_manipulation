@@ -682,23 +682,15 @@
       </div>
     </div>
 
-    <div class="figures-row">
-      <div class="figure">
-        <div class="figure__content" style="display:flex;justify-content:center;background:#f8f8f6;">
-          <img src="assets/fig5_real_robot_setup.png" alt="Franka FR3 real robot setup with peg and hole"
-               style="max-height:450px;width:auto;">
-        </div>
-        <div class="figure__caption">
-          <strong>Real robot setup.</strong> Franka FR3 with 3D-printed peg and hole (~0.5mm clearance). Force estimated from joint torques with EMA filtering.
-        </div>
+    <div class="figure">
+      <div class="figure__content" style="display:flex;align-items:center;gap:0;background:#fff;">
+        <img src="assets/fig5_real_robot_setup.png" alt="Franka FR3 real robot setup"
+             style="width:13%;flex-shrink:0;object-fit:contain;">
+        <img src="assets/fig5_real_robot_graphs.svg" alt="Real robot results across noise levels"
+             style="width:87%;">
       </div>
-      <div class="figure">
-        <div class="figure__content">
-          <img src="assets/fig5_real_robot_graphs.svg" alt="Real robot results across noise levels">
-        </div>
-        <div class="figure__caption">
-          <strong>Real robot results.</strong> Success rate, average force, and max force across increasing noise levels. MATCH outperforms Pose (+35% at 7.5mm), matching VICES with ~30% less force.
-        </div>
+      <div class="figure__caption">
+        <strong>Real robot results.</strong> Five simulation-trained policies were evaluated with 30 noiseless trials and the highest success rate policy was kept, then evaluated on increasing noise conditions (50 trials per condition). MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less force.
       </div>
     </div>
 

@@ -492,8 +492,8 @@
   <div class="teaser">
     <div class="teaser__figure">
       <!-- Replace with your teaser image/GIF -->
-      <img src="assets/fig1_overview.png" alt="MATCH overview: policy outputs pose goals, force goals, and per-axis mode selection for hybrid position-force control"
-           onerror="this.parentElement.innerHTML='<div style=&quot;padding:4rem;text-align:center;color:#888;background:#f4f4f0&quot;>Teaser figure: Replace with fig1_overview.png</div>'">
+      <img src="assets/fig1_overview.svg" alt="MATCH overview: policy outputs pose goals, force goals, and per-axis mode selection for hybrid position-force control"
+           onerror="this.parentElement.innerHTML='<div style=&quot;padding:4rem;text-align:center;color:#888;background:#f4f4f0&quot;>Teaser figure: Replace with fig1_overview.svg</div>'">
       <div class="teaser__caption">
         <strong>MATCH</strong> learns hybrid position-force control policies via reinforcement learning. The policy dynamically selects between position and force control per-axis, enabling directional compliance during contact-rich manipulation. Trained entirely in simulation and deployed zero-shot on a Franka FR3 robot.
       </div>
@@ -570,8 +570,8 @@
 
     <div class="figure">
       <div class="figure__content">
-        <img src="assets/fig2_learning_curves.png" alt="Learning efficiency comparison"
-             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig2_learning_curves.png</div>'">
+        <img src="assets/fig2_learning_curves.svg" alt="Learning efficiency comparison"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig2_learning_curves.svg</div>'">
       </div>
       <div class="figure__caption">
         <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower.
@@ -588,8 +588,8 @@
 
     <div class="figure">
       <div class="figure__content">
-        <img src="assets/fig3_selection.png" alt="Force control selection probability across task phases"
-             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig3_selection.png</div>'">
+        <img src="assets/fig3_selection.svg" alt="Force control selection probability across task phases"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig3_selection.svg</div>'">
       </div>
       <div class="figure__caption">
         <strong>Learned selection strategy.</strong> Force control probability across approach, contact, and insertion phases. MATCH uses force control in 84±10.8% of in-contact steps and only 2.9±2.1% of free-space steps — consistent with common analytical approaches to peg-in-hole.
@@ -634,8 +634,8 @@
 
     <div class="figure">
       <div class="figure__content">
-        <img src="assets/fig5_real_robot.png" alt="Real robot results across noise levels"
-             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig5_real_robot.png</div>'">
+        <img src="assets/fig5_real_robot.svg" alt="Real robot results across noise levels"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig5_real_robot.svg</div>'">
       </div>
       <div class="figure__caption">
         <strong>Real robot results.</strong> Success rate, average force, and max force across increasing noise levels. MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less average force and substantially lower max forces.
@@ -645,8 +645,8 @@
     <div class="figures-row">
       <div class="figure">
         <div class="figure__content">
-          <img src="assets/fig4_noise.png" alt="Simulation noise robustness"
-               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig4_noise.png</div>'">
+          <img src="assets/fig4_noise.svg" alt="Simulation noise robustness"
+               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig4_noise.svg</div>'">
         </div>
         <div class="figure__caption">
           <strong>Simulation noise robustness.</strong> Success and break rates under increasing localization noise. Hybrid methods maintain higher success and fewer breaks.
@@ -654,8 +654,8 @@
       </div>
       <div class="figure">
         <div class="figure__content">
-          <img src="assets/fig6_unbreakable.png" alt="Unbreakable peg results"
-               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig6_unbreakable.png</div>'">
+          <img src="assets/fig6_unbreakable.svg" alt="Unbreakable peg results"
+               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig6_unbreakable.svg</div>'">
         </div>
         <div class="figure__caption">
           <strong>Unbreakable peg.</strong> Even without force constraints, MATCH and VICES outperform Pose by 17–21%, showing force regulation provides generally useful behaviors.

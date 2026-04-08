@@ -3,8 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MATCH: Learning Hybrid-Control Policies for In-Contact Manipulation</title>
-  <meta name="description" content="MATCH: Mode-Aware Training for Contact Handling - Learning hybrid position-force control policies with reinforcement learning for high-precision manipulation under uncertainty.">
+  <title>MATCH: Learning Hybrid-Control Policies for High-Precision In-Contact Manipulation Under Uncertainty</title>
+  <meta name="description" content="MATCH: Mode-Aware Training for Contact Handling. We introduce hybrid position-force control policies trained with reinforcement learning that dynamically select between position and force control per-axis. Validated with 1,600+ sim-to-real trials on a Franka FR3 robot.">
+  <meta name="keywords" content="MATCH, hybrid position-force control, reinforcement learning, sim-to-real transfer, robotic manipulation, peg-in-hole, contact-rich manipulation, force control, variable impedance control, Franka FR3, IsaacLab, mode-aware training, robot learning, IROS 2026">
+  <meta name="author" content="Hunter Brown, Geoffrey Hollinger, Stefan Lee">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://robonuke.github.io/learning_hybrid-control_for_in-contact_manipulation/">
+
+  <!-- Open Graph (Facebook, LinkedIn) -->
+  <meta property="og:title" content="MATCH: Learning Hybrid-Control Policies for In-Contact Manipulation">
+  <meta property="og:description" content="Hybrid position-force control policies trained with RL that dynamically select between position and force control per-axis. 1,600+ real-robot trials, +35% over pose-only policies, ~30% less force than VICES.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://robonuke.github.io/learning_hybrid-control_for_in-contact_manipulation/">
+  <meta property="og:image" content="https://robonuke.github.io/learning_hybrid-control_for_in-contact_manipulation/assets/og_preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="MATCH Project Page">
+  <meta property="article:author" content="Hunter Brown">
+  <meta property="article:published_time" content="2025-04-01">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MATCH: Hybrid Position-Force Control with RL">
+  <meta name="twitter:description" content="1,600+ real-robot trials. +35% success over pose-only. ~30% less force than VICES. Zero-shot sim-to-real on Franka FR3.">
+  <meta name="twitter:image" content="https://robonuke.github.io/learning_hybrid-control_for_in-contact_manipulation/assets/og_preview.png">
+
+  <!-- Structured Data for Google Scholar / Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Learning Hybrid-Control Policies for High-Precision In-Contact Manipulation Under Uncertainty",
+    "alternativeHeadline": "MATCH: Mode-Aware Training for Contact Handling",
+    "author": [
+      {"@type": "Person", "name": "Hunter Brown", "affiliation": {"@type": "Organization", "name": "Oregon State University"}},
+      {"@type": "Person", "name": "Geoffrey Hollinger", "affiliation": {"@type": "Organization", "name": "Oregon State University"}},
+      {"@type": "Person", "name": "Stefan Lee", "affiliation": {"@type": "Organization", "name": "Oregon State University"}}
+    ],
+    "description": "We introduce hybrid position-force control policies trained with reinforcement learning that dynamically select between position and force control per-axis. MATCH adjusts policy action probabilities to explicitly mirror mode selection behavior in hybrid control. Validated with 1,600+ sim-to-real trials on a Franka FR3.",
+    "keywords": ["hybrid position-force control", "reinforcement learning", "sim-to-real transfer", "robotic manipulation", "peg-in-hole", "contact-rich manipulation", "force control"],
+    "about": ["Robotics", "Reinforcement Learning", "Manipulation", "Force Control"],
+    "isPartOf": {
+      "@type": "Event",
+      "name": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 2026"
+    },
+    "funder": {
+      "@type": "Organization",
+      "name": "Office of Naval Research"
+    }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

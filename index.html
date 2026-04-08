@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATCH: Learning Hybrid-Control Policies for In-Contact Manipulation</title>
+  <meta name="description" content="MATCH: Mode-Aware Training for Contact Handling - Learning hybrid position-force control policies with reinforcement learning for high-precision manipulation under uncertainty.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true},{left: '$', right: '$', display: false}]});"></script>
+
+  <style>
+    :root {
+      --color-bg: #FAFAF8;
+      --color-surface: #FFFFFF;
+      --color-text: #1a1a1a;
+      --color-text-secondary: #555;
+      --color-text-muted: #888;
+      --color-accent: #D73F09;
+      --color-accent-light: #FFF3EC;
+      --color-border: #e8e8e4;
+      --color-code-bg: #f4f4f0;
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-sans: 'Source Sans 3', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --max-width: 900px;
+      --max-width-wide: 1100px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      font-size: 17px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      text-align: center;
+      padding: 4rem 1.5rem 2.5rem;
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .hero__venue {
+      display: inline-block;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 1.2rem;
+      padding: 0.3rem 0.8rem;
+      background: var(--color-accent-light);
+      border-radius: 4px;
+    }
+
+    .hero__title {
+      font-family: var(--font-serif);
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+    }
+
+    .hero__authors {
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.4rem;
+    }
+
+    .hero__authors a {
+      color: var(--color-text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--color-border);
+      transition: border-color 0.2s;
+    }
+    .hero__authors a:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    .hero__affiliation {
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Link buttons */
+    .hero__links {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.3rem;
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+      background: var(--color-accent);
+      color: white;
+    }
+    .btn--primary:hover {
+      background: #b83508;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(215, 63, 9, 0.25);
+    }
+
+    .btn--secondary {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1.5px solid var(--color-border);
+    }
+    .btn--secondary:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* ===== SECTIONS ===== */
+    section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+    }
+
+    section.wide {
+      max-width: var(--max-width-wide);
+    }
+
+    .section__title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--color-accent);
+      display: inline-block;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--color-text-secondary);
+    }
+
+    /* ===== TEASER / HERO FIGURE ===== */
+    .teaser {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: 0 1.5rem 2rem;
+    }
+
+    .teaser__figure {
+      position: relative;
+      width: 100%;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .teaser__figure img,
+    .teaser__figure video {
+      width: 100%;
+      display: block;
+    }
+
+    .teaser__caption {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* ===== VIDEO EMBED ===== */
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .video-container iframe,
+    .video-container video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    .video-placeholder {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    /* ===== KEY RESULTS CARDS ===== */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .result-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.2rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .result-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+
+    .result-card__number {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      line-height: 1.2;
+    }
+
+    .result-card__label {
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      margin-top: 0.3rem;
+      line-height: 1.4;
+    }
+
+    /* ===== FIGURE GRID ===== */
+    .figure {
+      margin: 1.5rem 0;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .figure__content {
+      padding: 1rem;
+    }
+
+    .figure__content img {
+      width: 100%;
+      display: block;
+    }
+
+    .figure__caption {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.88rem;
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+      line-height: 1.5;
+    }
+
+    .figure__caption strong {
+      color: var(--color-text-secondary);
+    }
+
+    .figures-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    /* ===== GIF SHOWCASE ===== */
+    .gif-showcase {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .gif-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .gif-card__media {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #f0f0ec, #e8e8e4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .gif-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gif-card__label {
+      padding: 0.6rem 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      border-top: 1px solid var(--color-border);
+      color: var(--color-text-secondary);
+    }
+
+    /* ===== METHOD HIGHLIGHT ===== */
+    .method-highlight {
+      background: var(--color-accent-light);
+      border-left: 4px solid var(--color-accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .method-highlight h3 {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: var(--color-text);
+    }
+
+    .method-highlight p {
+      color: var(--color-text-secondary);
+      margin-bottom: 0;
+    }
+
+    /* ===== EQUATION BLOCK ===== */
+    .equation-block {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.2rem 0;
+      text-align: center;
+      overflow-x: auto;
+    }
+
+    /* ===== BIBTEX ===== */
+    .bibtex {
+      background: var(--color-code-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin: 1rem 0;
+      position: relative;
+    }
+
+    .bibtex pre {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: var(--color-text-secondary);
+    }
+
+    .bibtex__copy {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.78rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      color: var(--color-text-muted);
+      transition: all 0.2s;
+    }
+    .bibtex__copy:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+      max-width: var(--max-width);
+      margin: 2rem auto 0;
+    }
+
+    footer a {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero__title { font-size: 1.8rem; }
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+      .gif-showcase { grid-template-columns: 1fr; }
+      .figures-row { grid-template-columns: 1fr; }
+      html { font-size: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .results-grid { grid-template-columns: 1fr; }
+      .hero__title { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="hero__venue">IROS 2026 (Under Review)</div>
+    <h1 class="hero__title">Learning Hybrid-Control Policies for High-Precision In-Contact Manipulation Under Uncertainty</h1>
+    <div class="hero__authors">
+      <a href="#">Hunter Brown</a>,
+      <a href="#">Geoffrey Hollinger</a>,
+      <a href="#">Stefan Lee</a>
+    </div>
+    <div class="hero__affiliation">Oregon State University</div>
+
+    <div class="hero__links">
+      <a href="#" class="btn btn--primary">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        Paper (arXiv)
+      </a>
+      <a href="#" class="btn btn--secondary">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        Code
+      </a>
+      <a href="#video" class="btn btn--secondary">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        Video
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== TEASER FIGURE ===== -->
+  <div class="teaser">
+    <div class="teaser__figure">
+      <!-- Replace with your teaser image/GIF -->
+      <img src="assets/fig1_overview.png" alt="MATCH overview: policy outputs pose goals, force goals, and per-axis mode selection for hybrid position-force control"
+           onerror="this.parentElement.innerHTML='<div style=&quot;padding:4rem;text-align:center;color:#888;background:#f4f4f0&quot;>Teaser figure: Replace with fig1_overview.png</div>'">
+      <div class="teaser__caption">
+        <strong>MATCH</strong> learns hybrid position-force control policies via reinforcement learning. The policy dynamically selects between position and force control per-axis, enabling directional compliance during contact-rich manipulation. Trained entirely in simulation and deployed zero-shot on a Franka FR3 robot.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== KEY RESULTS ===== -->
+  <section>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="result-card__number">1,600+</div>
+        <div class="result-card__label">Real-robot trials<br>Zero-shot sim-to-real</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__number">+35%</div>
+        <div class="result-card__label">Success over Pose<br>at 7.5mm noise</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__number">~30%</div>
+        <div class="result-card__label">Less force than VICES<br>with direct control</div>
+      </div>
+      <div class="result-card">
+        <div class="result-card__number">0%</div>
+        <div class="result-card__label">Peg breaks in sim<br>(500 trials, 5 seeds)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABSTRACT ===== -->
+  <section>
+    <h2 class="section__title">Abstract</h2>
+    <p>
+      Reinforcement learning-based control policies have been frequently demonstrated to be more effective than analytical techniques for many manipulation tasks. Commonly, these methods learn neural control policies that predict end-effector pose changes directly from observed state information. For tasks like inserting delicate connectors which induce force constraints, pose-based policies have limited explicit control over force and rely on carefully tuned low-level controllers to avoid executing damaging actions.
+    </p>
+    <p>
+      In this work, we present hybrid position-force control policies that learn to dynamically select when to use force or position control in each control dimension. To improve learning efficiency of these policies, we introduce <strong>Mode-Aware Training for Contact Handling (MATCH)</strong> which adjusts policy action probabilities to explicitly mirror the mode selection behavior in hybrid control. We validate MATCH's learned policy effectiveness using fragile peg-in-hole tasks under extreme localization uncertainty.
+    </p>
+    <p>
+      We find MATCH substantially outperforms pose-control policies — solving these tasks with up to 10% higher success rates and 5x fewer peg breaks than pose-only policies under common types of state estimation error. MATCH also demonstrates data efficiency equal to pose-control policies, despite learning in a larger and more complex action space. In over 1,600 sim-to-real experiments, we find MATCH succeeds twice as often as pose policies in high noise settings (33% vs. 68%) and applies ~30% less force on average compared to variable impedance policies on a Franka FR3 in laboratory conditions.
+    </p>
+  </section>
+
+  <!-- ===== VIDEO ===== -->
+  <section id="video">
+    <h2 class="section__title">Video</h2>
+    <div class="video-container">
+      <!-- Replace with YouTube embed or local video -->
+      <!-- <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+      <div class="video-placeholder">Video embed — replace with YouTube iframe or hosted video</div>
+    </div>
+  </section>
+
+  <!-- ===== METHOD ===== -->
+  <section>
+    <h2 class="section__title">Method</h2>
+    <p>
+      MATCH addresses a fundamental challenge in learning hybrid position-force control with reinforcement learning: when the controller selects position control in a given axis, the force output for that axis has no effect on the robot's behavior, and vice versa. Standard mixed discrete-continuous formulations propagate gradients through all outputs regardless of which are actually used, producing uninformative updates.
+    </p>
+
+    <div class="method-highlight">
+      <h3>Mode-Aware Action Distribution</h3>
+      <p>
+        MATCH conditions the action probability on the selected mode, so only the active controller component receives gradient updates. This directly mirrors how the hybrid controller uses policy outputs and resolves the credit assignment problem.
+      </p>
+    </div>
+
+    <div class="equation-block">
+      $$c(a_i) = \begin{cases} p(\Lambda_i \mid \phi_i) \cdot p(x_i \mid \mu^x, \sigma^x) & \text{if } \Lambda_i = 1 \text{ (pose)} \\ (1 - p(\Lambda_i \mid \phi_i)) \cdot p(f_i \mid \mu^f, \sigma^f) & \text{if } \Lambda_i = 0 \text{ (force)} \end{cases}$$
+    </div>
+
+    <p>
+      We also introduce a <strong>Supervised Selection Loss (SSL)</strong> that uses binary cross-entropy between the selection probability and the true contact state. This provides gradient signal for force control exploration during early training, when the policy is rarely in contact and would otherwise avoid force control entirely.
+    </p>
+
+    <div class="figure">
+      <div class="figure__content">
+        <img src="assets/fig2_learning_curves.png" alt="Learning efficiency comparison"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig2_learning_curves.png</div>'">
+      </div>
+      <div class="figure__caption">
+        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LEARNED STRATEGY ===== -->
+  <section>
+    <h2 class="section__title">Learned Control Strategy</h2>
+    <p>
+      MATCH discovers a physically meaningful hybrid control strategy without explicit task-phase engineering. The policy learns to use position control in free space, switch to force control upon contact (particularly in the z-axis to maintain contact with the hole rim), and return to position control for the insertion descent.
+    </p>
+
+    <div class="figure">
+      <div class="figure__content">
+        <img src="assets/fig3_selection.png" alt="Force control selection probability across task phases"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig3_selection.png</div>'">
+      </div>
+      <div class="figure__caption">
+        <strong>Learned selection strategy.</strong> Force control probability across approach, contact, and insertion phases. MATCH uses force control in 84±10.8% of in-contact steps and only 2.9±2.1% of free-space steps — consistent with common analytical approaches to peg-in-hole.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIM-TO-REAL ===== -->
+  <section class="wide">
+    <h2 class="section__title">Sim-to-Real Experiments</h2>
+    <p>
+      We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
+    </p>
+
+    <!-- GIF Showcase -->
+    <div class="gif-showcase">
+      <div class="gif-card">
+        <div class="gif-card__media">
+          <!-- Replace with GIF of low noise trial -->
+          <img src="assets/gif_low_noise.gif" alt="Low noise insertion trial"
+               onerror="this.parentElement.innerHTML='GIF: Low noise trial'">
+        </div>
+        <div class="gif-card__label">Low Noise (1mm)</div>
+      </div>
+      <div class="gif-card">
+        <div class="gif-card__media">
+          <!-- Replace with GIF of medium noise trial -->
+          <img src="assets/gif_med_noise.gif" alt="Medium noise insertion trial"
+               onerror="this.parentElement.innerHTML='GIF: Medium noise trial'">
+        </div>
+        <div class="gif-card__label">Medium Noise (5mm)</div>
+      </div>
+      <div class="gif-card">
+        <div class="gif-card__media">
+          <!-- Replace with GIF of high noise trial -->
+          <img src="assets/gif_high_noise.gif" alt="High noise insertion trial"
+               onerror="this.parentElement.innerHTML='GIF: High noise trial'">
+        </div>
+        <div class="gif-card__label">High Noise (7.5mm)</div>
+      </div>
+    </div>
+
+    <div class="figure">
+      <div class="figure__content">
+        <img src="assets/fig5_real_robot.png" alt="Real robot results across noise levels"
+             onerror="this.parentElement.innerHTML='<div style=&quot;padding:3rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig5_real_robot.png</div>'">
+      </div>
+      <div class="figure__caption">
+        <strong>Real robot results.</strong> Success rate, average force, and max force across increasing noise levels. MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less average force and substantially lower max forces.
+      </div>
+    </div>
+
+    <div class="figures-row">
+      <div class="figure">
+        <div class="figure__content">
+          <img src="assets/fig4_noise.png" alt="Simulation noise robustness"
+               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig4_noise.png</div>'">
+        </div>
+        <div class="figure__caption">
+          <strong>Simulation noise robustness.</strong> Success and break rates under increasing localization noise. Hybrid methods maintain higher success and fewer breaks.
+        </div>
+      </div>
+      <div class="figure">
+        <div class="figure__content">
+          <img src="assets/fig6_unbreakable.png" alt="Unbreakable peg results"
+               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig6_unbreakable.png</div>'">
+        </div>
+        <div class="figure__caption">
+          <strong>Unbreakable peg.</strong> Even without force constraints, MATCH and VICES outperform Pose by 17–21%, showing force regulation provides generally useful behaviors.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CITATION ===== -->
+  <section>
+    <h2 class="section__title">Citation</h2>
+    <div class="bibtex">
+      <button class="bibtex__copy" onclick="copyBibtex()">Copy</button>
+      <pre><code>@inproceedings{brown2025match,
+  title={Learning Hybrid-Control Policies for High-Precision
+         In-Contact Manipulation Under Uncertainty},
+  author={Brown, Hunter and Hollinger, Geoffrey and Lee, Stefan},
+  booktitle={IEEE/RSJ International Conference on
+             Intelligent Robots and Systems (IROS)},
+  year={2025}
+}</code></pre>
+    </div>
+  </section>
+
+  <!-- ===== ACKNOWLEDGMENTS ===== -->
+  <section>
+    <h2 class="section__title">Acknowledgments</h2>
+    <p>
+      This work was supported by the Office of Naval Research (ONR).
+    </p>
+  </section>
+
+  <footer>
+    <p>MATCH Project Page &mdash; Oregon State University &mdash; 2025</p>
+    <p style="margin-top:0.5rem">
+      Template inspired by <a href="https://nerfies.github.io" target="_blank">Nerfies</a>.
+    </p>
+  </footer>
+
+  <script>
+    function copyBibtex() {
+      const bibtex = document.querySelector('.bibtex code').textContent;
+      navigator.clipboard.writeText(bibtex).then(() => {
+        const btn = document.querySelector('.bibtex__copy');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+  </script>
+</body>
+</html>

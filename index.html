@@ -652,6 +652,40 @@
     </p>
   </section>
 
+  <!-- ===== FRAGILE PEG-IN-HOLE ===== -->
+  <section class="wide">
+    <h2 class="section__title">Fragile Peg-in-Hole</h2>
+    <p>
+      We evaluate on fragile peg-in-hole (fPiH), a canonical contact-rich manipulation task with strict force constraints. The peg has a circular cross-section with ~0.5mm clearance. If force exceeds a break threshold of <strong>F<sub>th</sub> = 10N</strong>, the peg breaks and the task fails.
+    </p>
+    <p>
+      During training, noise is applied to the policy's observation of the hole position (σ=1mm Gaussian), end-effector position (σ=0.25mm), and force sensing (σ=1N). At evaluation, we test under increasing <strong>uniform localization noise</strong> on the hole position — up to ±7.5mm, nearly the full 8mm hole diameter.
+    </p>
+
+    <!-- Noise condition top-down views -->
+    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="comparison-grid__header">Low (0–1mm)</div>
+      <div class="comparison-grid__header">Medium (1–2.5mm)</div>
+      <div class="comparison-grid__header">High (2.5–5mm)</div>
+      <div class="comparison-grid__header">Very High (5–7.5mm)</div>
+      <div class="comparison-grid__cell">
+        <img src="assets/sim_hole_low_noise.png" alt="Low noise: hole location distribution">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/sim_hole_med_noise.png" alt="Medium noise: hole location distribution">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/sim_hole_high_noise.png" alt="High noise: hole location distribution">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/sim_hole_vhigh_noise.png" alt="Very high noise: hole location distribution">
+      </div>
+    </div>
+    <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
+      <strong style="color:var(--color-text-secondary);">Evaluation noise conditions.</strong> Top-down view of the hole with the distribution of estimated hole locations at each noise level. At the highest setting, the estimated position can be off by nearly the entire hole diameter.
+    </p>
+  </section>
+
   <!-- ===== SIM-TO-REAL ===== -->
   <section class="wide">
     <h2 class="section__title">Sim-to-Real Experiments</h2>
@@ -707,27 +741,15 @@
   <section class="wide">
     <h2 class="section__title">Simulation Experiments</h2>
     <p>
-      We evaluate on fragile peg-in-hole in simulation with a break threshold of 10N. Policies are trained with Gaussian noise (σ=1mm) and tested under increasing uniform localization noise up to ±7.5mm — nearly the full 8mm hole diameter.
+      We evaluate all methods in simulation across the four noise levels described above. Each policy was evaluated across 500 episodes per noise condition.
     </p>
 
-    <!-- Noise condition visualizations -->
+    <!-- Sim rollout GIFs -->
     <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
       <div class="comparison-grid__header">Low Noise (0–1mm)</div>
       <div class="comparison-grid__header">Medium Noise (1–2.5mm)</div>
       <div class="comparison-grid__header">High Noise (2.5–5mm)</div>
       <div class="comparison-grid__header">Very High Noise (5–7.5mm)</div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_low_noise.png" alt="Low noise condition top-down view">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_med_noise.png" alt="Medium noise condition top-down view">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_high_noise.png" alt="High noise condition top-down view">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_vhigh_noise.png" alt="Very high noise condition top-down view">
-      </div>
       <div class="comparison-grid__cell">
         <img src="assets/gif_sim_low_noise.gif" alt="Sim rollout low noise"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim low noise GIF</div>'">
@@ -746,7 +768,7 @@
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Testing conditions.</strong> Top-down view of the hole with noise regions overlaid, and corresponding simulation rollouts at each noise level.
+      <strong style="color:var(--color-text-secondary);">Simulation rollouts</strong> at each noise level.
     </p>
 
     <!-- Table I -->

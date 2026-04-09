@@ -367,45 +367,61 @@
       margin: 1.5rem 0;
     }
 
-    /* ===== GIF SHOWCASE ===== */
-    .gif-showcase {
+    /* ===== COMPARISON GRID (3x2 synced GIFs) ===== */
+    .comparison-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-
-    .gif-card {
-      background: var(--color-surface);
+      gap: 2px;
+      margin: 1.5rem 0 0.5rem;
+      background: var(--color-border);
       border: 1px solid var(--color-border);
       border-radius: 8px;
       overflow: hidden;
     }
 
-    .gif-card__media {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: linear-gradient(135deg, #f0f0ec, #e8e8e4);
+    .comparison-grid__header {
+      background: var(--color-code-bg);
+      padding: 0.6rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--color-text);
+    }
+
+    .comparison-grid__header--accent {
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+    }
+
+    .comparison-grid__cell {
+      background: var(--color-surface);
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .comparison-grid__cell img {
+      width: 100%;
+      display: block;
+    }
+
+    .gif-placeholder {
+      padding: 3rem 1rem;
+      text-align: center;
       color: var(--color-text-muted);
       font-size: 0.9rem;
-    }
-
-    .gif-card__media img {
+      background: var(--color-code-bg);
       width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
-    .gif-card__label {
-      padding: 0.6rem 0.8rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-align: center;
-      border-top: 1px solid var(--color-border);
-      color: var(--color-text-secondary);
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      .comparison-grid__header:nth-child(2),
+      .comparison-grid__header:nth-child(3) {
+        display: none;
+      }
     }
 
     /* ===== METHOD HIGHLIGHT ===== */
@@ -587,6 +603,79 @@
     </p>
   </section>
 
+  <!-- ===== SIM-TO-REAL ===== -->
+  <section class="wide">
+    <h2 class="section__title">Sim-to-Real Experiments</h2>
+    <p>
+      We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
+    </p>
+
+    <!-- 3x2 Comparison Grid: Pose vs MATCH vs VICES -->
+    <div class="comparison-grid">
+      <div class="comparison-grid__header">Pose</div>
+      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
+      <div class="comparison-grid__header">VICES</div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_pose_rollout.gif" alt="Pose policy rollout"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose rollout GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_match_rollout.gif" alt="MATCH policy rollout"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH rollout GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_vices_rollout.gif" alt="VICES policy rollout"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES rollout GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_pose_force.gif" alt="Pose force profile"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose force plot GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_match_force.gif" alt="MATCH force profile"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH force plot GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_vices_force.gif" alt="VICES force profile"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES force plot GIF</div>'">
+      </div>
+    </div>
+    <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
+      <strong style="color:var(--color-text-secondary);">Synchronized rollouts and force profiles.</strong> All clips are the same duration and loop in sync. MATCH maintains smooth, sustained contact while Pose exhibits jerky make-and-break behavior.
+    </p>
+
+    <div class="figure" style="margin-top:2rem;">
+      <div class="figure__content" style="display:flex;align-items:center;gap:0;background:#fff;">
+        <img src="assets/fig5_real_robot_setup.png" alt="Franka FR3 real robot setup"
+             style="width:13%;flex-shrink:0;object-fit:contain;">
+        <img src="assets/fig5_real_robot_graphs.svg" alt="Real robot results across noise levels"
+             style="width:87%;">
+      </div>
+      <div class="figure__caption">
+        <strong>Real robot results.</strong> Five simulation-trained policies were evaluated with 30 noiseless trials and the highest success rate policy was kept, then evaluated on increasing noise conditions (50 trials per condition). MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less force.
+      </div>
+    </div>
+
+    <div class="figures-row">
+      <div class="figure">
+        <div class="figure__content">
+          <img src="assets/fig4_noise.svg" alt="Simulation noise robustness">
+        </div>
+        <div class="figure__caption">
+          <strong>Simulation noise robustness.</strong> Success and break rates under increasing localization noise. Hybrid methods maintain higher success and fewer breaks.
+        </div>
+      </div>
+      <div class="figure">
+        <div class="figure__content">
+          <img src="assets/fig6_unbreakable.svg" alt="Unbreakable peg results">
+        </div>
+        <div class="figure__caption">
+          <strong>Unbreakable peg.</strong> Even without force constraints, MATCH and VICES outperform Pose by 17–21%, showing force regulation provides generally useful behaviors.
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== VIDEO ===== -->
   <section id="video">
     <h2 class="section__title">Video</h2>
@@ -645,75 +734,6 @@
       </div>
       <div class="figure__caption">
         <strong>Learned selection strategy.</strong> Force control probability across approach, contact, and insertion phases. MATCH uses force control in 84±10.8% of in-contact steps and only 2.9±2.1% of free-space steps — consistent with common analytical approaches to peg-in-hole.
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SIM-TO-REAL ===== -->
-  <section class="wide">
-    <h2 class="section__title">Sim-to-Real Experiments</h2>
-    <p>
-      We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
-    </p>
-
-    <!-- GIF Showcase -->
-    <div class="gif-showcase">
-      <div class="gif-card">
-        <div class="gif-card__media">
-          <!-- Replace with GIF of low noise trial -->
-          <img src="assets/gif_low_noise.gif" alt="Low noise insertion trial"
-               onerror="this.parentElement.innerHTML='GIF: Low noise trial'">
-        </div>
-        <div class="gif-card__label">Low Noise (1mm)</div>
-      </div>
-      <div class="gif-card">
-        <div class="gif-card__media">
-          <!-- Replace with GIF of medium noise trial -->
-          <img src="assets/gif_med_noise.gif" alt="Medium noise insertion trial"
-               onerror="this.parentElement.innerHTML='GIF: Medium noise trial'">
-        </div>
-        <div class="gif-card__label">Medium Noise (5mm)</div>
-      </div>
-      <div class="gif-card">
-        <div class="gif-card__media">
-          <!-- Replace with GIF of high noise trial -->
-          <img src="assets/gif_high_noise.gif" alt="High noise insertion trial"
-               onerror="this.parentElement.innerHTML='GIF: High noise trial'">
-        </div>
-        <div class="gif-card__label">High Noise (7.5mm)</div>
-      </div>
-    </div>
-
-    <div class="figure">
-      <div class="figure__content" style="display:flex;align-items:center;gap:0;background:#fff;">
-        <img src="assets/fig5_real_robot_setup.png" alt="Franka FR3 real robot setup"
-             style="width:13%;flex-shrink:0;object-fit:contain;">
-        <img src="assets/fig5_real_robot_graphs.svg" alt="Real robot results across noise levels"
-             style="width:87%;">
-      </div>
-      <div class="figure__caption">
-        <strong>Real robot results.</strong> Five simulation-trained policies were evaluated with 30 noiseless trials and the highest success rate policy was kept, then evaluated on increasing noise conditions (50 trials per condition). MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less force.
-      </div>
-    </div>
-
-    <div class="figures-row">
-      <div class="figure">
-        <div class="figure__content">
-          <img src="assets/fig4_noise.svg" alt="Simulation noise robustness"
-               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig4_noise.svg</div>'">
-        </div>
-        <div class="figure__caption">
-          <strong>Simulation noise robustness.</strong> Success and break rates under increasing localization noise. Hybrid methods maintain higher success and fewer breaks.
-        </div>
-      </div>
-      <div class="figure">
-        <div class="figure__content">
-          <img src="assets/fig6_unbreakable.svg" alt="Unbreakable peg results"
-               onerror="this.parentElement.innerHTML='<div style=&quot;padding:2rem;text-align:center;color:#888;background:#f4f4f0&quot;>fig6_unbreakable.svg</div>'">
-        </div>
-        <div class="figure__caption">
-          <strong>Unbreakable peg.</strong> Even without force constraints, MATCH and VICES outperform Pose by 17–21%, showing force regulation provides generally useful behaviors.
-        </div>
       </div>
     </div>
   </section>

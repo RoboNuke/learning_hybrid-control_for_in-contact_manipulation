@@ -393,6 +393,18 @@
       color: var(--color-accent);
     }
 
+    .comparison-grid__rowlabel {
+      background: var(--color-code-bg);
+      padding: 0.6rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .comparison-grid__cell {
       background: var(--color-surface);
       display: flex;
@@ -693,34 +705,43 @@
       We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
     </p>
 
-    <!-- 3x2 Comparison Grid: Pose vs MATCH vs VICES -->
-    <div class="comparison-grid">
+    <!-- 4x2 Comparison Grid: Pose vs VICES vs MATCH vs Hybrid-Basic -->
+    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
       <div class="comparison-grid__header">Pose</div>
-      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
       <div class="comparison-grid__header">VICES</div>
+      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
+      <div class="comparison-grid__header">Hybrid-Basic</div>
       <div class="comparison-grid__cell">
         <img src="assets/gif_pose_rollout.gif" alt="Pose policy rollout"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose rollout GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_match_rollout.gif" alt="MATCH policy rollout"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH rollout GIF</div>'">
       </div>
       <div class="comparison-grid__cell">
         <img src="assets/gif_vices_rollout.gif" alt="VICES policy rollout"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES rollout GIF</div>'">
       </div>
       <div class="comparison-grid__cell">
+        <img src="assets/gif_match_rollout.gif" alt="MATCH policy rollout"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH rollout GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_basic_rollout.gif" alt="Hybrid-Basic policy rollout"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic rollout GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
         <img src="assets/gif_pose_force.gif" alt="Pose force profile"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose force plot GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_vices_force.gif" alt="VICES force profile"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES force plot GIF</div>'">
       </div>
       <div class="comparison-grid__cell">
         <img src="assets/gif_match_force.gif" alt="MATCH force profile"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH force plot GIF</div>'">
       </div>
       <div class="comparison-grid__cell">
-        <img src="assets/gif_vices_force.gif" alt="VICES force profile"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES force plot GIF</div>'">
+        <img src="assets/gif_basic_force.gif" alt="Hybrid-Basic force profile"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic force plot GIF</div>'">
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
@@ -744,31 +765,40 @@
       We evaluate all methods in simulation across the four noise levels described above. Each policy was evaluated across 500 episodes per noise condition.
     </p>
 
-    <!-- Sim rollout GIFs -->
-    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
-      <div class="comparison-grid__header">Low Noise (0–1mm)</div>
-      <div class="comparison-grid__header">Medium Noise (1–2.5mm)</div>
-      <div class="comparison-grid__header">High Noise (2.5–5mm)</div>
-      <div class="comparison-grid__header">Very High Noise (5–7.5mm)</div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_sim_low_noise.gif" alt="Sim rollout low noise"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim low noise GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_sim_med_noise.gif" alt="Sim rollout medium noise"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim med noise GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_sim_high_noise.gif" alt="Sim rollout high noise"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim high noise GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_sim_vhigh_noise.gif" alt="Sim rollout very high noise"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim very high noise GIF</div>'">
-      </div>
+    <!-- 4x4 Simulation Grid: Methods (columns) × Noise Levels (rows) -->
+    <div class="comparison-grid" style="grid-template-columns:auto repeat(4,1fr);">
+      <div class="comparison-grid__rowlabel"></div>
+      <div class="comparison-grid__header">Pose</div>
+      <div class="comparison-grid__header">VICES</div>
+      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
+      <div class="comparison-grid__header">Hybrid-Basic</div>
+
+      <div class="comparison-grid__rowlabel">Low<br>(0–1mm)</div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_low.gif" alt="Sim Pose low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose low</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_low.gif" alt="Sim VICES low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES low</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_low.gif" alt="Sim MATCH low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH low</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_low.gif" alt="Sim Basic low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic low</div>'"></div>
+
+      <div class="comparison-grid__rowlabel">Medium<br>(1–2.5mm)</div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_med.gif" alt="Sim Pose med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose med</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_med.gif" alt="Sim VICES med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES med</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_med.gif" alt="Sim MATCH med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH med</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_med.gif" alt="Sim Basic med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic med</div>'"></div>
+
+      <div class="comparison-grid__rowlabel">High<br>(2.5–5mm)</div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_high.gif" alt="Sim Pose high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose high</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_high.gif" alt="Sim VICES high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES high</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_high.gif" alt="Sim MATCH high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH high</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_high.gif" alt="Sim Basic high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic high</div>'"></div>
+
+      <div class="comparison-grid__rowlabel">Very High<br>(5–7.5mm)</div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_vhigh.gif" alt="Sim Pose vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose vhigh</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_vhigh.gif" alt="Sim VICES vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES vhigh</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_vhigh.gif" alt="Sim MATCH vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH vhigh</div>'"></div>
+      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_vhigh.gif" alt="Sim Basic vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic vhigh</div>'"></div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Simulation rollouts</strong> at each noise level.
+      <strong style="color:var(--color-text-secondary);">Simulation rollouts</strong> across methods and noise levels. All clips within each row are synchronized.
     </p>
 
     <!-- Table I -->

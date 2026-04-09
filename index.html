@@ -711,10 +711,11 @@
     </p>
 
     <!-- Noise condition visualizations -->
-    <div class="comparison-grid" style="grid-template-columns:repeat(3,1fr);">
-      <div class="comparison-grid__header">Low Noise (0–2.5mm)</div>
-      <div class="comparison-grid__header">Medium Noise (2.5–5mm)</div>
-      <div class="comparison-grid__header">High Noise (5–7.5mm)</div>
+    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="comparison-grid__header">Low Noise (0–1mm)</div>
+      <div class="comparison-grid__header">Medium Noise (1–2.5mm)</div>
+      <div class="comparison-grid__header">High Noise (2.5–5mm)</div>
+      <div class="comparison-grid__header">Very High Noise (5–7.5mm)</div>
       <div class="comparison-grid__cell">
         <img src="assets/sim_hole_low_noise.png" alt="Low noise condition top-down view">
       </div>
@@ -723,6 +724,9 @@
       </div>
       <div class="comparison-grid__cell">
         <img src="assets/sim_hole_high_noise.png" alt="High noise condition top-down view">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/sim_hole_vhigh_noise.png" alt="Very high noise condition top-down view">
       </div>
       <div class="comparison-grid__cell">
         <img src="assets/gif_sim_low_noise.gif" alt="Sim rollout low noise"
@@ -735,6 +739,10 @@
       <div class="comparison-grid__cell">
         <img src="assets/gif_sim_high_noise.gif" alt="Sim rollout high noise"
              onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim high noise GIF</div>'">
+      </div>
+      <div class="comparison-grid__cell">
+        <img src="assets/gif_sim_vhigh_noise.gif" alt="Sim rollout very high noise"
+             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Sim very high noise GIF</div>'">
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">

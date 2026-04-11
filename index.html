@@ -840,10 +840,6 @@
         <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         Code
       </a>
-      <a href="#video" class="btn btn--secondary">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        Video
-      </a>
     </div>
   </header>
 
@@ -852,8 +848,9 @@
     <h2 class="section__title" style="text-align:center;display:block;margin-bottom:1rem;">MATCH: Mode-Aware Training for Contact Handling</h2>
     <div class="teaser__figure">
       <!-- Replace with your teaser image/GIF -->
-      <img src="assets/fig1_overview.svg" alt="MATCH overview: policy outputs pose goals, force goals, and per-axis mode selection for hybrid position-force control"
-           onerror="this.parentElement.innerHTML='<div style=&quot;padding:4rem;text-align:center;color:#888;background:#f4f4f0&quot;>Teaser figure: Replace with fig1_overview.svg</div>'">
+      <video autoplay muted loop playsinline style="width:100%;display:block;">
+        <source src="assets/overview_video.mp4" type="video/mp4">
+      </video>
       <div class="teaser__caption">
         <strong>MATCH</strong> learns hybrid position-force control policies via reinforcement learning. The policy dynamically selects between position and force control per-axis, enabling directional compliance during contact-rich manipulation. Trained entirely in simulation and deployed zero-shot on a Franka FR3 robot.
       </div>
@@ -1159,8 +1156,18 @@
   </section>
 
   <!-- ===== METHOD ===== -->
-  <section>
+  <section class="wide">
     <h2 class="section__title">Method</h2>
+
+    <div class="figure" style="margin-bottom:1.5rem;">
+      <div class="figure__content">
+        <img src="assets/fig1_overview.svg" alt="MATCH method overview: policy outputs pose goals, force goals, and per-axis mode selection">
+      </div>
+      <div class="figure__caption">
+        <strong>Method overview.</strong> The MATCH policy outputs pose goals, force goals, and a per-axis binary mode selection. The hybrid controller uses only the selected component per axis, enabling directional compliance during contact.
+      </div>
+    </div>
+
     <p>
       MATCH addresses a fundamental challenge in learning hybrid position-force control with reinforcement learning: when the controller selects position control in a given axis, the force output for that axis has no effect on the robot's behavior, and vice versa. Standard mixed discrete-continuous formulations propagate gradients through all outputs regardless of which are actually used, producing uninformative updates.
     </p>
@@ -1179,17 +1186,6 @@
     <p>
       We also introduce a <strong>Supervised Selection Loss (SSL)</strong> that uses binary cross-entropy between the selection probability and the true contact state. This provides gradient signal for force control exploration during early training, when the policy is rarely in contact and would otherwise avoid force control entirely.
     </p>
-  </section>
-
-  <!-- ===== VIDEO ===== -->
-  <section id="video">
-    <h2 class="section__title">Video</h2>
-    <div class="video-container">
-      <video controls preload="metadata" poster="assets/og_preview.png?v=5">
-        <source src="assets/supplementary_video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
   </section>
 
   <!-- ===== CITATION ===== -->

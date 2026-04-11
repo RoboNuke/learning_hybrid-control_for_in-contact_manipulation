@@ -458,6 +458,193 @@
       margin-bottom: 0;
     }
 
+    /* ===== SIMULATION CAROUSEL ===== */
+    .sim-carousel {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+
+    .sim-carousel__controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: var(--color-code-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sim-carousel__btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-border);
+      background: var(--color-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .sim-carousel__btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      background: var(--color-accent-light);
+    }
+
+    .sim-carousel__info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .sim-carousel__badge {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .sim-carousel__badge[data-level="low"] { background: #2d8a4e; }
+    .sim-carousel__badge[data-level="med"] { background: #c9922e; }
+    .sim-carousel__badge[data-level="high"] { background: #d35f2a; }
+    .sim-carousel__badge[data-level="vhigh"] { background: #c0392b; }
+
+    .sim-carousel__counter {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .sim-carousel__noise {
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .sim-carousel__holeview {
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      background: #fff;
+    }
+
+    .sim-carousel__holeview canvas {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      aspect-ratio: 1;
+    }
+
+    .sim-carousel__methods {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--color-border);
+    }
+
+    .sim-carousel__method {
+      background: var(--color-surface);
+    }
+
+    .sim-carousel__method--accent {
+      background: var(--color-accent-light);
+    }
+
+    .sim-carousel__method-header {
+      padding: 0.5rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--color-text);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .sim-carousel__method--accent .sim-carousel__method-header {
+      color: var(--color-accent);
+    }
+
+    .sim-carousel__method-video {
+      position: relative;
+      aspect-ratio: 4/3;
+      background: #f4f4f0;
+    }
+
+    .sim-carousel__method-video video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sim-carousel__method-placeholder {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      background: var(--color-code-bg);
+    }
+
+    .sim-carousel__progress {
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .sim-carousel__progress-track {
+      position: relative;
+      height: 6px;
+      background: var(--color-code-bg);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .sim-carousel__progress-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      background: var(--color-accent);
+      border-radius: 3px;
+      transition: width 0.2s;
+    }
+
+    .sim-carousel__progress-segments {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+    }
+
+    .sim-carousel__progress-seg {
+      flex: 1;
+      border-right: 2px solid var(--color-surface);
+    }
+
+    .sim-carousel__progress-seg:last-child {
+      border-right: none;
+    }
+
+    .sim-carousel__progress-labels {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 0.3rem;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+    }
+
     /* ===== RESULTS TABLE ===== */
     .results-table {
       width: 100%;
@@ -765,40 +952,81 @@
       We evaluate all methods in simulation across the four noise levels described above. Each policy was evaluated across 500 episodes per noise condition.
     </p>
 
-    <!-- 4x4 Simulation Grid: Methods (columns) × Noise Levels (rows) -->
-    <div class="comparison-grid" style="grid-template-columns:auto repeat(4,1fr);">
-      <div class="comparison-grid__rowlabel"></div>
-      <div class="comparison-grid__header">Pose</div>
-      <div class="comparison-grid__header">VICES</div>
-      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
-      <div class="comparison-grid__header">Hybrid-Basic</div>
+    <!-- Interactive Simulation Carousel -->
+    <div class="sim-carousel" id="simCarousel">
+      <!-- Controls -->
+      <div class="sim-carousel__controls">
+        <button class="sim-carousel__btn" id="carouselPrev" aria-label="Previous condition">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="sim-carousel__info">
+          <span class="sim-carousel__badge" id="carouselBadge">Low Noise</span>
+          <span class="sim-carousel__counter" id="carouselCounter">1 / 20</span>
+          <span class="sim-carousel__noise" id="carouselNoise">Offset: (0.3, -0.6) mm</span>
+        </div>
+        <button class="sim-carousel__btn" id="carouselNext" aria-label="Next condition">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
 
-      <div class="comparison-grid__rowlabel">Low<br>(0–1mm)</div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_low.gif" alt="Sim Pose low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose low</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_low.gif" alt="Sim VICES low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES low</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_low.gif" alt="Sim MATCH low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH low</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_low.gif" alt="Sim Basic low noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic low</div>'"></div>
+      <!-- Top-down hole view -->
+      <div class="sim-carousel__holeview">
+        <canvas id="holeCanvas" width="500" height="500"></canvas>
+      </div>
 
-      <div class="comparison-grid__rowlabel">Medium<br>(1–2.5mm)</div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_med.gif" alt="Sim Pose med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose med</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_med.gif" alt="Sim VICES med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES med</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_med.gif" alt="Sim MATCH med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH med</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_med.gif" alt="Sim Basic med noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic med</div>'"></div>
+      <!-- Method videos -->
+      <div class="sim-carousel__methods">
+        <div class="sim-carousel__method">
+          <div class="sim-carousel__method-header">Pose</div>
+          <div class="sim-carousel__method-video">
+            <video id="vid_pose" muted loop playsinline preload="none">
+              <source id="src_pose" src="" type="video/mp4">
+            </video>
+            <div class="sim-carousel__method-placeholder" id="ph_pose">Pose video</div>
+          </div>
+        </div>
+        <div class="sim-carousel__method">
+          <div class="sim-carousel__method-header">VICES</div>
+          <div class="sim-carousel__method-video">
+            <video id="vid_vices" muted loop playsinline preload="none">
+              <source id="src_vices" src="" type="video/mp4">
+            </video>
+            <div class="sim-carousel__method-placeholder" id="ph_vices">VICES video</div>
+          </div>
+        </div>
+        <div class="sim-carousel__method sim-carousel__method--accent">
+          <div class="sim-carousel__method-header">MATCH (Ours)</div>
+          <div class="sim-carousel__method-video">
+            <video id="vid_match" muted loop playsinline preload="none">
+              <source id="src_match" src="" type="video/mp4">
+            </video>
+            <div class="sim-carousel__method-placeholder" id="ph_match">MATCH video</div>
+          </div>
+        </div>
+        <div class="sim-carousel__method">
+          <div class="sim-carousel__method-header">Hybrid-Basic</div>
+          <div class="sim-carousel__method-video">
+            <video id="vid_basic" muted loop playsinline preload="none">
+              <source id="src_basic" src="" type="video/mp4">
+            </video>
+            <div class="sim-carousel__method-placeholder" id="ph_basic">Basic video</div>
+          </div>
+        </div>
+      </div>
 
-      <div class="comparison-grid__rowlabel">High<br>(2.5–5mm)</div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_high.gif" alt="Sim Pose high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose high</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_high.gif" alt="Sim VICES high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES high</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_high.gif" alt="Sim MATCH high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH high</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_high.gif" alt="Sim Basic high noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic high</div>'"></div>
-
-      <div class="comparison-grid__rowlabel">Very High<br>(5–7.5mm)</div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_pose_vhigh.gif" alt="Sim Pose vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose vhigh</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_vices_vhigh.gif" alt="Sim VICES vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES vhigh</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_match_vhigh.gif" alt="Sim MATCH vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH vhigh</div>'"></div>
-      <div class="comparison-grid__cell"><img src="assets/gif_sim_basic_vhigh.gif" alt="Sim Basic vhigh noise" onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic vhigh</div>'"></div>
+      <!-- Progress bar -->
+      <div class="sim-carousel__progress">
+        <div class="sim-carousel__progress-track">
+          <div class="sim-carousel__progress-fill" id="carouselProgress"></div>
+          <div class="sim-carousel__progress-segments" id="carouselSegments"></div>
+        </div>
+        <div class="sim-carousel__progress-labels">
+          <span>Low</span><span>Medium</span><span>High</span><span>Very High</span>
+        </div>
+      </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Simulation rollouts</strong> across methods and noise levels. All clips within each row are synchronized.
+      <strong style="color:var(--color-text-secondary);">Interactive simulation rollouts.</strong> Use ← → arrows or click the buttons to browse conditions. All four method videos are synchronized. Videos will load when you provide MP4 files.
     </p>
 
     <!-- Table I -->
@@ -986,6 +1214,215 @@
         setTimeout(() => btn.textContent = 'Copy', 2000);
       });
     }
+
+    // ===== Simulation Carousel =====
+    (function() {
+      // Generate placeholder data: 20 conditions across noise levels
+      // Replace this with your real data JSON later
+      const conditions = [];
+      const levels = [
+        { name: 'Low', key: 'low', range: [0, 1], count: 5, color: '#2d8a4e' },
+        { name: 'Medium', key: 'med', range: [1, 2.5], count: 5, color: '#c9922e' },
+        { name: 'High', key: 'high', range: [2.5, 5], count: 5, color: '#d35f2a' },
+        { name: 'Very High', key: 'vhigh', range: [5, 7.5], count: 5, color: '#c0392b' }
+      ];
+
+      let id = 1;
+      levels.forEach(level => {
+        for (let i = 0; i < level.count; i++) {
+          const mag = level.range[0] + Math.random() * (level.range[1] - level.range[0]);
+          const angle = Math.random() * Math.PI * 2;
+          conditions.push({
+            id: id++,
+            noise_level: level.key,
+            noise_label: level.name,
+            noise_color: level.color,
+            noise_mm: +mag.toFixed(2),
+            offset_x: +(mag * Math.cos(angle)).toFixed(2),
+            offset_y: +(mag * Math.sin(angle)).toFixed(2)
+          });
+        }
+      });
+
+      const TOTAL = conditions.length;
+      let current = 0;
+
+      const canvas = document.getElementById('holeCanvas');
+      const ctx = canvas.getContext('2d');
+      const badge = document.getElementById('carouselBadge');
+      const counter = document.getElementById('carouselCounter');
+      const noiseInfo = document.getElementById('carouselNoise');
+      const progressFill = document.getElementById('carouselProgress');
+      const segContainer = document.getElementById('carouselSegments');
+
+      // Build progress segments
+      levels.forEach(l => {
+        const seg = document.createElement('div');
+        seg.className = 'sim-carousel__progress-seg';
+        segContainer.appendChild(seg);
+      });
+
+      const methods = ['pose', 'vices', 'match', 'basic'];
+      const videos = {};
+      const placeholders = {};
+      methods.forEach(m => {
+        videos[m] = document.getElementById('vid_' + m);
+        placeholders[m] = document.getElementById('ph_' + m);
+      });
+
+      function drawHole(cond) {
+        const W = canvas.width, H = canvas.height;
+        const cx = W / 2, cy = H / 2;
+        const scale = W / 20; // 20mm total view width
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Background
+        ctx.fillStyle = '#f8f8f6';
+        ctx.fillRect(0, 0, W, H);
+
+        // Draw noise range circle (faded)
+        ctx.beginPath();
+        ctx.arc(cx, cy, cond.noise_mm * scale, 0, Math.PI * 2);
+        ctx.fillStyle = cond.noise_color + '15';
+        ctx.fill();
+        ctx.strokeStyle = cond.noise_color + '40';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Draw all noise level rings for reference
+        levels.forEach(l => {
+          ctx.beginPath();
+          ctx.arc(cx, cy, l.range[1] * scale, 0, Math.PI * 2);
+          ctx.strokeStyle = '#ddd';
+          ctx.lineWidth = 0.5;
+          ctx.setLineDash([4, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+
+        // Draw hole (8mm diameter = 4mm radius)
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4 * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw hole center dot
+        ctx.beginPath();
+        ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#333';
+        ctx.fill();
+
+        // Draw peg (estimated position) as X
+        const px = cx + cond.offset_x * scale;
+        const py = cy + cond.offset_y * scale;
+        const xSize = 8;
+
+        ctx.strokeStyle = cond.noise_color;
+        ctx.lineWidth = 3;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(px - xSize, py - xSize);
+        ctx.lineTo(px + xSize, py + xSize);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(px + xSize, py - xSize);
+        ctx.lineTo(px - xSize, py + xSize);
+        ctx.stroke();
+
+        // Draw peg circle outline at estimated position (8mm peg)
+        ctx.beginPath();
+        ctx.arc(px, py, 4 * scale, 0, Math.PI * 2);
+        ctx.strokeStyle = cond.noise_color + '60';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Labels
+        ctx.fillStyle = '#888';
+        ctx.font = '12px Source Sans 3, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('True hole center', cx, cy + 4 * scale + 18);
+
+        ctx.fillStyle = cond.noise_color;
+        ctx.font = 'bold 12px Source Sans 3, Arial, sans-serif';
+        ctx.fillText('Estimated position', px, py - xSize - 8);
+
+        // Scale bar
+        const barY = H - 25;
+        const barLen = 5 * scale; // 5mm
+        ctx.strokeStyle = '#888';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx - barLen/2, barY);
+        ctx.lineTo(cx + barLen/2, barY);
+        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx - barLen/2, barY-4); ctx.lineTo(cx - barLen/2, barY+4); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + barLen/2, barY-4); ctx.lineTo(cx + barLen/2, barY+4); ctx.stroke();
+        ctx.fillStyle = '#888';
+        ctx.font = '11px Source Sans 3, Arial, sans-serif';
+        ctx.fillText('5 mm', cx, barY + 16);
+      }
+
+      function updateCarousel() {
+        const cond = conditions[current];
+
+        // Update info
+        badge.textContent = cond.noise_label + ' Noise';
+        badge.setAttribute('data-level', cond.noise_level);
+        counter.textContent = (current + 1) + ' / ' + TOTAL;
+        noiseInfo.textContent = 'Offset: (' + cond.offset_x + ', ' + cond.offset_y + ') mm';
+
+        // Draw hole view
+        drawHole(cond);
+
+        // Update progress
+        progressFill.style.width = ((current + 1) / TOTAL * 100) + '%';
+
+        // Update video sources (when real videos exist)
+        const padId = String(cond.id).padStart(3, '0');
+        methods.forEach(m => {
+          const src = 'assets/sim/sim_' + m + '_' + padId + '.mp4';
+          const srcEl = document.getElementById('src_' + m);
+          if (srcEl.getAttribute('src') !== src) {
+            srcEl.setAttribute('src', src);
+            videos[m].load();
+          }
+        });
+
+        // Try to play all videos synced
+        const playPromises = methods.map(m => {
+          videos[m].currentTime = 0;
+          return videos[m].play().catch(() => {});
+        });
+      }
+
+      document.getElementById('carouselPrev').addEventListener('click', () => {
+        current = (current - 1 + TOTAL) % TOTAL;
+        updateCarousel();
+      });
+
+      document.getElementById('carouselNext').addEventListener('click', () => {
+        current = (current + 1) % TOTAL;
+        updateCarousel();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        // Only respond if carousel is somewhat in view
+        if (e.key === 'ArrowLeft') {
+          current = (current - 1 + TOTAL) % TOTAL;
+          updateCarousel();
+        } else if (e.key === 'ArrowRight') {
+          current = (current + 1) % TOTAL;
+          updateCarousel();
+        }
+      });
+
+      // Initialize
+      updateCarousel();
+    })();
   </script>
 </body>
 </html>

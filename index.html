@@ -541,7 +541,7 @@
 
     .sim-carousel__methods {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 2px;
       background: var(--color-border);
     }
@@ -637,6 +637,57 @@
 
     .sim-carousel__progress-seg:last-child {
       border-right: none;
+    }
+
+    /* ===== VIDEO TABLE (sim-to-real) ===== */
+    .video-table {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+
+    .video-table__row {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .video-table__row:last-child {
+      border-bottom: none;
+    }
+
+    .video-table__row--accent {
+      background: var(--color-accent-light);
+    }
+
+    .video-table__label {
+      width: 100px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-text);
+      background: var(--color-code-bg);
+      border-right: 1px solid var(--color-border);
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .video-table__row--accent .video-table__label {
+      color: var(--color-accent);
+      background: var(--color-accent-light);
+    }
+
+    .video-table__content {
+      flex: 1;
+      background: #000;
+    }
+
+    .video-table__content video {
+      width: 100%;
+      display: block;
     }
 
     /* ===== RESULTS TABLE ===== */
@@ -886,47 +937,35 @@
       We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
     </p>
 
-    <!-- 4x2 Comparison Grid: Pose vs VICES vs MATCH vs Hybrid-Basic -->
-    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
-      <div class="comparison-grid__header">Pose</div>
-      <div class="comparison-grid__header">VICES</div>
-      <div class="comparison-grid__header comparison-grid__header--accent">MATCH (Ours)</div>
-      <div class="comparison-grid__header">Hybrid-Basic</div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_pose_rollout.gif" alt="Pose policy rollout"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose rollout GIF</div>'">
+    <!-- Method video comparison: vertical rows -->
+    <div class="video-table">
+      <div class="video-table__row">
+        <div class="video-table__label">Pose</div>
+        <div class="video-table__content">
+          <video controls preload="metadata" playsinline>
+            <source src="assets/real_pose.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_vices_rollout.gif" alt="VICES policy rollout"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES rollout GIF</div>'">
+      <div class="video-table__row">
+        <div class="video-table__label">VICES</div>
+        <div class="video-table__content">
+          <video controls preload="metadata" playsinline>
+            <source src="assets/real_vices.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_match_rollout.gif" alt="MATCH policy rollout"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH rollout GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_basic_rollout.gif" alt="Hybrid-Basic policy rollout"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic rollout GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_pose_force.gif" alt="Pose force profile"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Pose force plot GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_vices_force.gif" alt="VICES force profile"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>VICES force plot GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_match_force.gif" alt="MATCH force profile"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>MATCH force plot GIF</div>'">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/gif_basic_force.gif" alt="Hybrid-Basic force profile"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Basic force plot GIF</div>'">
+      <div class="video-table__row video-table__row--accent">
+        <div class="video-table__label">MATCH<br>(Ours)</div>
+        <div class="video-table__content">
+          <video controls preload="metadata" playsinline>
+            <source src="assets/real_match.mp4" type="video/mp4">
+          </video>
+        </div>
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Synchronized rollouts and force profiles.</strong> All clips are the same duration and loop in sync. MATCH maintains smooth, sustained contact while Pose exhibits jerky make-and-break behavior.
+      <strong style="color:var(--color-text-secondary);">Real robot rollouts with force profiles.</strong> Each video shows a deployment trial alongside measured forces. MATCH maintains smooth, sustained contact while Pose exhibits jerky make-and-break behavior.
     </p>
 
     <div class="figure" style="margin-top:2rem;">
@@ -991,15 +1030,6 @@
               <source id="src_match" src="" type="video/mp4">
             </video>
             <div class="sim-carousel__method-placeholder" id="ph_match">MATCH video</div>
-          </div>
-        </div>
-        <div class="sim-carousel__method">
-          <div class="sim-carousel__method-header">Hybrid-Basic</div>
-          <div class="sim-carousel__method-video">
-            <video id="vid_basic" muted loop playsinline preload="none">
-              <source id="src_basic" src="" type="video/mp4">
-            </video>
-            <div class="sim-carousel__method-placeholder" id="ph_basic">Basic video</div>
           </div>
         </div>
       </div>
@@ -1101,10 +1131,10 @@
     </div>
 
     <div class="figure">
-      <div class="figure__content" style="display:flex;justify-content:center;background:#f8f8f6;">
-        <img src="assets/gif_selection_rollout.gif" alt="Rollout with selection probability visualization"
-             onerror="this.parentElement.innerHTML='<div class=\'gif-placeholder\'>Selection probability rollout GIF</div>'"
-             style="max-width:100%;">
+      <div class="figure__content" style="background:#000;">
+        <video controls preload="metadata" playsinline style="width:100%;display:block;">
+          <source src="assets/match_selection.mp4" type="video/mp4">
+        </video>
       </div>
       <div class="figure__caption">
         <strong>Selection rollout.</strong> A single rollout showing the mode selection probability overlaid on the robot's behavior in real-time.
@@ -1252,7 +1282,7 @@
         segContainer.appendChild(seg);
       });
 
-      const methods = ['pose', 'vices', 'match', 'basic'];
+      const methods = ['pose', 'vices', 'match'];
       const videos = {};
       const placeholders = {};
       methods.forEach(m => {

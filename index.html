@@ -538,11 +538,6 @@
     .sim-carousel__badge[data-level="high"] { background: #d35f2a; }
     .sim-carousel__badge[data-level="vhigh"] { background: #c0392b; }
 
-    .sim-carousel__distance {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--color-text);
-    }
 
     .sim-carousel__methods {
       display: grid;
@@ -963,7 +958,6 @@
         </div>
         <div class="sim-carousel__info">
           <span class="sim-carousel__badge" id="carouselBadge">Low Noise</span>
-          <span class="sim-carousel__distance" id="carouselDistance">0.67 mm</span>
         </div>
         <button class="sim-carousel__btn" id="carouselNext" aria-label="Next condition">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -1248,7 +1242,6 @@
       const ctx = canvas.getContext('2d');
       const badge = document.getElementById('carouselBadge');
       const counter = document.getElementById('carouselCounter');
-      const distanceEl = document.getElementById('carouselDistance');
       const progressFill = document.getElementById('carouselProgress');
       const segContainer = document.getElementById('carouselSegments');
 
@@ -1370,13 +1363,13 @@
         badge.textContent = cond.noise_label + ' (' + cond.noise_mm + ' mm)';
         badge.setAttribute('data-level', cond.noise_level);
         counter.textContent = (current + 1) + ' / ' + TOTAL;
-        distanceEl.textContent = cond.noise_mm + ' mm estimation error';
 
         // Draw hole view
         drawHole(cond);
 
-        // Update progress
+        // Update progress bar and color
         progressFill.style.width = ((current + 1) / TOTAL * 100) + '%';
+        progressFill.style.background = cond.noise_color;
 
         // Update video sources (when real videos exist)
         const padId = String(cond.id).padStart(3, '0');

@@ -1323,59 +1323,48 @@
         const W = rect.width, H = rect.height;
         const cx = W / 2, cy = H / 2;
         const scale = W / 20; // 20mm total view width
+        const holeRadius = 4 * scale; // 8mm diameter hole
         
-        // Font sizes relative to canvas display size
-        const fontLg = Math.round(W * 0.07); // labels
-        const fontMd = Math.round(W * 0.06); // scale bar
-        const fontBadge = Math.round(W * 0.08); // badge
+        // Font sizes relative to canvas
+        const fontMd = Math.round(W * 0.09);
+        const fontBadge = Math.round(W * 0.11);
+        const lw = Math.max(2, W * 0.01);
 
-        ctx.clearRect(0, 0, W, H);
-
-        // Background
-        ctx.fillStyle = '#f8f8f6';
+        // White background
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, W, H);
-        
-        const lw = Math.max(2, W * 0.008); // base line width
 
-        // Draw noise range circle (faded)
+        // Draw grey square block with hole cut out
+        ctx.fillStyle = '#999';
         ctx.beginPath();
-        ctx.arc(cx, cy, cond.noise_mm * scale, 0, Math.PI * 2);
-        ctx.fillStyle = cond.noise_color + '15';
-        ctx.fill();
-        ctx.strokeStyle = cond.noise_color + '40';
-        ctx.lineWidth = lw * 2;
-        ctx.stroke();
+        // Outer square
+        ctx.rect(0, 0, W, H);
+        // Cut out circle (counter-clockwise to create hole)
+        ctx.arc(cx, cy, holeRadius, 0, Math.PI * 2, true);
+        ctx.fill('evenodd');
 
-        // Draw all noise level rings for reference
-        levels.forEach(l => {
-          ctx.beginPath();
-          ctx.arc(cx, cy, l.range[1] * scale, 0, Math.PI * 2);
-          ctx.strokeStyle = '#ccc';
-          ctx.lineWidth = lw;
-          ctx.setLineDash([W*0.02, W*0.02]);
-          ctx.stroke();
-          ctx.setLineDash([]);
-        });
-
-        // Draw hole (8mm diameter = 4mm radius)
-        ctx.beginPath();
-        ctx.arc(cx, cy, 4 * scale, 0, Math.PI * 2);
-        ctx.strokeStyle = '#333';
-        ctx.lineWidth = lw * 2;
-        ctx.stroke();
-
-        // Draw hole center dot
-        ctx.beginPath();
-        ctx.arc(cx, cy, lw * 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#333';
-        ctx.fill();
-
-        // Draw peg (estimated position) as X
+        // Draw robot's belief: filled circle at estimated position
         const px = cx + cond.offset_x * scale;
         const py = cy + cond.offset_y * scale;
-        const xSize = W * 0.04;
 
+        // Filled belief circle with noise color
+        ctx.beginPath();
+        ctx.arc(px, py, holeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = cond.noise_color + 'B3'; // ~0.7 alpha
+        ctx.fill();
+
+        // Dotted outline around belief circle
+        ctx.beginPath();
+        ctx.arc(px, py, holeRadius, 0, Math.PI * 2);
         ctx.strokeStyle = cond.noise_color;
+        ctx.lineWidth = lw * 1.5;
+        ctx.setLineDash([W * 0.02, W * 0.015]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // X marker at estimated center
+        const xSize = W * 0.04;
+        ctx.strokeStyle = '#fff';
         ctx.lineWidth = lw * 3;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -1387,47 +1376,29 @@
         ctx.lineTo(px - xSize, py + xSize);
         ctx.stroke();
 
-        // Draw peg circle outline at estimated position (8mm peg)
-        ctx.beginPath();
-        ctx.arc(px, py, 4 * scale, 0, Math.PI * 2);
-        ctx.strokeStyle = cond.noise_color + '60';
-        ctx.lineWidth = lw * 2;
-        ctx.setLineDash([W*0.03, W*0.02]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Labels
-        ctx.fillStyle = '#666';
-        ctx.font = 'bold ' + fontLg + 'px Source Sans 3, Arial, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('True hole center', cx, cy + 4 * scale + fontLg * 1.5);
-
-        ctx.fillStyle = cond.noise_color;
-        ctx.font = 'bold ' + fontLg + 'px Source Sans 3, Arial, sans-serif';
-        ctx.fillText('Estimated position', px, py - xSize - fontLg * 0.5);
-
-        // Scale bar
-        const barY = H - fontMd * 2.5;
-        const barLen = 5 * scale; // 5mm
-        ctx.strokeStyle = '#666';
+        // Scale bar at bottom
+        const barY = H - fontMd * 2;
+        const barLen = 5 * scale;
+        ctx.strokeStyle = '#fff';
         ctx.lineWidth = lw * 2;
         ctx.beginPath();
         ctx.moveTo(cx - barLen/2, barY);
         ctx.lineTo(cx + barLen/2, barY);
         ctx.stroke();
-        const endH = lw * 4;
+        const endH = lw * 3;
         ctx.beginPath(); ctx.moveTo(cx - barLen/2, barY-endH); ctx.lineTo(cx - barLen/2, barY+endH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx + barLen/2, barY-endH); ctx.lineTo(cx + barLen/2, barY+endH); ctx.stroke();
-        ctx.fillStyle = '#666';
+        ctx.fillStyle = '#fff';
         ctx.font = 'bold ' + fontMd + 'px Source Sans 3, Arial, sans-serif';
-        ctx.fillText('5 mm', cx, barY + fontMd * 1.4);
+        ctx.textAlign = 'center';
+        ctx.fillText('5 mm', cx, barY + fontMd * 1.3);
 
-        // Draw noise badge in top-right corner
+        // Noise badge in top-right corner
         const badgeText = cond.noise_label + ' (' + cond.noise_mm + ' mm)';
         ctx.font = 'bold ' + fontBadge + 'px Source Sans 3, Arial, sans-serif';
         const badgeW = ctx.measureText(badgeText).width + fontBadge * 0.6;
-        const badgeH = fontBadge * 1.6;
-        const badgePad = W * 0.02;
+        const badgeH = fontBadge * 1.5;
+        const badgePad = W * 0.025;
         const badgeX = W - badgeW - badgePad;
         const badgeY = badgePad;
         ctx.fillStyle = cond.noise_color;
@@ -1436,7 +1407,7 @@
         ctx.fill();
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
-        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + fontBadge * 1.15);
+        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + fontBadge * 1.1);
       }
 
       function updateCarousel() {

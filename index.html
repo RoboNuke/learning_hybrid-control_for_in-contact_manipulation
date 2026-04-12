@@ -500,20 +500,22 @@
 
     .sim-carousel__header-center {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 0.4rem;
-      width: calc(100% / 3);
-      max-width: 350px;
+      gap: 0.8rem;
+      flex: 1;
+      justify-content: center;
     }
 
     .sim-carousel__holeview {
-      width: 100%;
+      width: calc(100% / 3);
+      max-width: 300px;
+      min-width: 150px;
       aspect-ratio: 1;
       border-radius: 6px;
       overflow: hidden;
       border: 1px solid var(--color-border);
       background: #fff;
+      flex-shrink: 0;
     }
 
     .sim-carousel__holeview canvas {
@@ -836,9 +838,13 @@
         background: var(--color-accent-light);
       }
       .sim-carousel__header {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
         gap: 0.5rem;
+      }
+      .sim-carousel__holeview {
+        width: 50%;
+        min-width: 120px;
       }
       .video-table__row {
         flex-direction: column;

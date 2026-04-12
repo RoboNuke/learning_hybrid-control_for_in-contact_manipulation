@@ -1389,18 +1389,18 @@
 
         // Draw noise badge in top-right corner
         const badgeText = cond.noise_label + ' (' + cond.noise_mm + ' mm)';
-        ctx.font = 'bold 13px Source Sans 3, Arial, sans-serif';
-        const badgeW = ctx.measureText(badgeText).width + 16;
-        const badgeH = 24;
-        const badgeX = W - badgeW - 8;
-        const badgeY = 8;
+        ctx.font = 'bold 26px Source Sans 3, Arial, sans-serif';
+        const badgeW = ctx.measureText(badgeText).width + 24;
+        const badgeH = 40;
+        const badgeX = W - badgeW - 10;
+        const badgeY = 10;
         ctx.fillStyle = cond.noise_color;
         ctx.beginPath();
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 4);
+        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
         ctx.fill();
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
-        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + 16);
+        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + 29);
       }
 
       function updateCarousel() {

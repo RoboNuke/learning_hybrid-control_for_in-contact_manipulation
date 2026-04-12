@@ -1384,13 +1384,13 @@
 
         // Labels
         ctx.fillStyle = '#666';
-        ctx.font = 'bold 20px Source Sans 3, Arial, sans-serif';
+        ctx.font = 'bold 40px Source Sans 3, Arial, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('True hole center', cx, cy + 4 * scale + 28);
+        ctx.fillText('True hole center', cx, cy + 4 * scale + 48);
 
         ctx.fillStyle = cond.noise_color;
-        ctx.font = 'bold 20px Source Sans 3, Arial, sans-serif';
-        ctx.fillText('Estimated position', px, py - xSize - 14);
+        ctx.font = 'bold 40px Source Sans 3, Arial, sans-serif';
+        ctx.fillText('Estimated position', px, py - xSize - 22);
 
         // Scale bar
         const barY = H - 35;
@@ -1404,14 +1404,14 @@
         ctx.beginPath(); ctx.moveTo(cx - barLen/2, barY-6); ctx.lineTo(cx - barLen/2, barY+6); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx + barLen/2, barY-6); ctx.lineTo(cx + barLen/2, barY+6); ctx.stroke();
         ctx.fillStyle = '#666';
-        ctx.font = 'bold 18px Source Sans 3, Arial, sans-serif';
-        ctx.fillText('5 mm', cx, barY + 24);
+        ctx.font = 'bold 36px Source Sans 3, Arial, sans-serif';
+        ctx.fillText('5 mm', cx, barY + 34);
 
         // Draw noise badge in top-right corner
         const badgeText = cond.noise_label + ' (' + cond.noise_mm + ' mm)';
-        ctx.font = 'bold 28px Source Sans 3, Arial, sans-serif';
-        const badgeW = ctx.measureText(badgeText).width + 28;
-        const badgeH = 44;
+        ctx.font = 'bold 50px Source Sans 3, Arial, sans-serif';
+        const badgeW = ctx.measureText(badgeText).width + 36;
+        const badgeH = 68;
         const badgeX = W - badgeW - 12;
         const badgeY = 12;
         ctx.fillStyle = cond.noise_color;
@@ -1420,7 +1420,7 @@
         ctx.fill();
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
-        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + 32);
+        ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + 50);
       }
 
       function updateCarousel() {

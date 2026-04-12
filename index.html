@@ -931,7 +931,7 @@
       In this work, we present hybrid position-force control policies that learn to dynamically select when to use force or position control in each control dimension. To improve learning efficiency of these policies, we introduce <strong>Mode-Aware Training for Contact Handling (MATCH)</strong> which adjusts policy action probabilities to explicitly mirror the mode selection behavior in hybrid control. We validate MATCH's learned policy effectiveness using fragile peg-in-hole tasks under extreme localization uncertainty.
     </p>
     <p>
-      We find MATCH substantially outperforms pose-control policies — solving these tasks with up to 10% higher success rates and 5x fewer peg breaks than pose-only policies under common types of state estimation error. MATCH also demonstrates data efficiency equal to pose-control policies, despite learning in a larger and more complex action space. In over 1,600 sim-to-real experiments, we find MATCH succeeds twice as often as pose policies in high noise settings (33% vs. 68%) and applies ~30% less force on average compared to variable impedance policies on a Franka FR3 in laboratory conditions.
+      We find MATCH substantially outperforms pose-control policies — solving these tasks with up to 10% higher success rates and 5x fewer peg breaks than pose-only policies under common types of state estimation error. MATCH also demonstrates data efficiency equal to pose-control policies, despite learning in a larger and more complex action space. <strong>In over 1,600 sim-to-real experiments, we find MATCH succeeds twice as often as pose policies in high noise settings (33% vs. 68%) and applies ~30% less force on average compared to variable impedance policies on a Franka FR3 in laboratory conditions.</strong>
     </p>
   </section>
 
@@ -942,7 +942,7 @@
       We evaluate on fragile peg-in-hole (fPiH), a canonical contact-rich manipulation task with strict force constraints. The peg has a circular cross-section with ~0.5mm clearance. If force exceeds a break threshold of <strong>F<sub>th</sub> = 10N</strong>, the peg breaks and the task fails.
     </p>
     <p>
-      During training, noise is applied to the policy's observation of the hole position (σ=1mm Gaussian), end-effector position (σ=0.25mm), and force sensing (σ=1N). At evaluation, we test under increasing <strong>uniform localization noise</strong> on the hole position — up to ±7.5mm, nearly the full 8mm hole diameter.
+      During training, Gaussian noise is applied to the policy's observation of the hole position (σ=1mm), end-effector position (σ=0.25mm), and force sensing (σ=1N). At evaluation, we test under increasing <strong>uniform localization noise</strong> on the hole position — up to ±7.5mm, nearly the full 8mm hole diameter.
     </p>
 
     <div class="figure">
@@ -967,7 +967,7 @@
   <section class="wide">
     <h2 class="section__title">Sim-to-Real Experiments</h2>
     <p>
-      We deployed simulation-trained policies directly to a Franka FR3 robot with no fine-tuning. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels.
+      We deployed simulation-trained policies directly to a Franka FR3 robot with <strong>no fine-tuning</strong>. The peg and hole were 3D printed with ~0.5mm clearance. Force was estimated from joint torques and filtered with an exponential moving average. Over 1,600 trials were conducted across four noise levels and four policy types.
     </p>
 
     <!-- Method video comparison: vertical rows -->
@@ -998,7 +998,7 @@
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Real robot rollouts with force profiles.</strong> Each video shows a deployment trial alongside measured forces. MATCH maintains smooth, sustained contact while Pose exhibits jerky make-and-break behavior.
+      <strong style="color:var(--color-text-secondary);">Real robot rollouts with force profiles.</strong> Each video shows a trial in the very high noise setting with the estimated end-effector forces. MATCH maintains gentle motion, with sustained contact. Pose control shows an inability to regulate forces as they vary significantly. VICES shows the quickest solution, but still hits large initial forces.
     </p>
 
     <div class="figure" style="margin-top:2rem;">
@@ -1006,7 +1006,7 @@
         <img src="assets/fig5_real_robot_graphs.svg" alt="Real robot results across noise levels">
       </div>
       <div class="figure__caption">
-        <strong>Real robot results.</strong> Five simulation-trained policies were evaluated with 30 noiseless trials and the highest success rate policy was kept, then evaluated on increasing noise conditions (50 trials per condition). MATCH substantially outperforms Pose (+35% at 7.5mm), achieving comparable success to VICES while exerting ~30% less force.
+        <strong>Real robot results.</strong> Five simulation-trained policies were evaluated with 30 noiseless trials and the highest success rate policy was kept, then evaluated on increasing noise conditions (<strong>100 trials per condition</strong>). MATCH substantially <strong>outperforms Pose (+35% at very high noise)</strong>, achieving comparable success to VICES while exerting <strong>~30% less force</strong>.
       </div>
     </div>
   </section>
@@ -1015,7 +1015,7 @@
   <section class="wide">
     <h2 class="section__title">Simulation Experiments</h2>
     <p>
-      We evaluate all methods in simulation across the four noise levels described above. Each policy was evaluated across 500 episodes per noise condition.
+      We evaluate all methods in simulation across the four noise levels described above. Each of five seeds were evaluated across 500 episodes per noise condition.
     </p>
 
     <!-- Interactive Simulation Carousel -->
@@ -1079,7 +1079,7 @@
       </div>
     </div>
     <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Interactive simulation rollouts.</strong> Use ← → arrows or click the buttons to browse conditions. All four method videos are synchronized. Videos will load when you provide MP4 files.
+      <strong style="color:var(--color-text-secondary);">Interactive simulation rollouts.</strong> Browse different noise conditions using ← → arrows. Each condition shows all three methods starting from the same initial state and noise realization, allowing direct comparison of contact behavior and insertion strategy across methods.
     </p>
 
     <!-- Table I -->
@@ -1116,7 +1116,7 @@
         <img src="assets/fig4_noise.svg" alt="Noise robustness results">
       </div>
       <div class="figure__caption">
-        <strong>Robustness to localization noise.</strong> Success rate and break rate under increasing hole localization noise. All methods degrade with larger noise, but hybrid methods maintain near 40% success at 7.5mm while Pose drops to ~30%. Break rates for hybrid policies remain less than half of pose control.
+        <strong>Robustness to localization noise.</strong> Success rate and break rate under increasing hole localization noise. All methods degrade with larger noise, but force-aware methods maintain nearly 10% higher success rates. Training Pose with higher noise (σ=2.5mm) does not improve performance — in fact, Pose(2.5mm) shows substantially worse performance across all noise levels, as the strict force constraints degrade the learning signal under greater uncertainty. Break rates for hybrid policies remain less than half of pose control.
       </div>
     </div>
   </section>
@@ -1132,7 +1132,7 @@
         <img src="assets/fig2_learning_curves.svg" alt="Learning efficiency comparison">
       </div>
       <div class="figure__caption">
-        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower.
+        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower. This is partially due to SSL encouraging force exploration at every stage of training.
       </div>
     </div>
   </section>
@@ -1150,7 +1150,7 @@
         <img src="assets/fig3_selection.svg" alt="Force control selection probability across task phases" style="width:100%;display:block;">
       </div>
       <div class="figure__caption">
-        <strong>Task phases and learned selection strategy.</strong> (Top) Three phases of fragile peg-in-hole: approach, initial contact, and insertion. (Bottom) Force control probability across phases — MATCH uses force control in 84±10.8% of in-contact steps and only 2.9±2.1% of free-space steps, consistent with common analytical approaches.
+        <strong>Task phases and learned selection strategy.</strong> (Top) Three phases of fragile peg-in-hole. During <em>approach</em>, the robot moves toward the hole in free-space where force control is dangerous — MATCH consistently predicts near-zero probability of force control. Upon <em>initial contact</em>, force control probability spikes, most pronounced in the z-direction, as the policy maintains firm contact with the hole rim while searching for alignment via position control in xy. During <em>insertion</em>, z-axis force control decreases as position control affords better regulation of the peg's descent. (Bottom) Force control selection probability across phases, showing this physically meaningful strategy emerges entirely from training.
       </div>
     </div>
 
@@ -1161,7 +1161,7 @@
         </video>
       </div>
       <div class="figure__caption">
-        <strong>Selection rollout.</strong> A single rollout showing the mode selection probability overlaid on the robot's behavior in real-time.
+        <strong>Selection rollout.</strong> A single rollout showing the mode selection probability overlaid on the robot's behavior.
       </div>
     </div>
   </section>
@@ -1170,7 +1170,7 @@
   <section>
     <h2 class="section__title">Tasks Without Force Constraints</h2>
     <p>
-      To study whether hybrid control provides benefits beyond force-constrained settings, we evaluate with unbreakable pegs. Even without force constraints, MATCH and VICES outperform Pose by 17–21%, indicating that force regulation provides generally useful behaviors for in-contact manipulation.
+      One possible explanation for the above results is that the force-aware methods are advantaged due to the strict force constraints in the task. To test this, we evaluated the methods after training with an unbreakable peg. Even without force constraints, MATCH and VICES outperform Pose by 17–21%, indicating that force regulation provides generally useful behaviors for in-contact manipulation.
     </p>
     <div class="figure">
       <div class="figure__content">

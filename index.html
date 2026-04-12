@@ -904,19 +904,19 @@
     </p>
 
     <div class="figure">
-      <div class="figure__content" style="display:flex;align-items:center;gap:2px;background:var(--color-border);">
-        <div style="flex:1;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
-          <img src="assets/robot_solo.svg" alt="Franka FR3 robot setup" style="max-height:350px;width:auto;">
+      <div class="figure__content" style="display:grid;grid-template-columns:1fr 1.5fr;grid-template-rows:auto auto;gap:2px;background:var(--color-border);">
+        <div style="grid-row:span 2;background:#fff;display:flex;align-items:center;justify-content:center;padding:0.5rem;">
+          <img src="assets/robot_solo.svg" alt="Franka FR3 robot setup" style="width:100%;height:100%;object-fit:contain;">
         </div>
-        <div style="flex:1;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
-          <img src="assets/peg_hole_setup.svg" alt="3D-printed peg and hole" style="max-height:350px;width:auto;">
+        <div style="background:#fff;display:flex;align-items:center;justify-content:center;padding:0.5rem;">
+          <img src="assets/error_levels.svg" alt="Evaluation noise levels for hole localization" style="width:100%;">
         </div>
-        <div style="flex:2;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
-          <img src="assets/error_levels.svg" alt="Evaluation noise levels for hole localization" style="max-height:350px;width:auto;">
+        <div style="background:#fff;display:flex;align-items:center;justify-content:center;padding:0.5rem;">
+          <img src="assets/peg_hole_setup.svg" alt="3D-printed peg and hole" style="width:100%;">
         </div>
       </div>
       <div class="figure__caption">
-        <strong>Experimental setup and evaluation conditions.</strong> (Left) Franka FR3 robot. (Center) 3D-printed peg and hole with ~0.5mm clearance. (Right) Top-down view of the hole with estimated position distributions at each noise level — at the highest setting, the estimated position can be off by nearly the entire hole diameter.
+        <strong>Experimental setup and evaluation conditions.</strong> (Left) Franka FR3 robot. (Top right) Top-down view of the hole with estimated position distributions at each noise level — at the highest setting, the estimated position can be off by nearly the entire hole diameter. (Bottom right) 3D-printed peg and hole with ~0.5mm clearance.
       </div>
     </div>
   </section>
@@ -1104,8 +1104,8 @@
     </p>
 
     <div class="figure">
-      <div class="figure__content" style="display:flex;justify-content:center;background:#fff;">
-        <img src="assets/fig1b_phases.png" alt="Task phases: approach, initial contact, insertion" style="max-height:350px;width:auto;">
+      <div class="figure__content" style="background:#fff;">
+        <img src="assets/fig1b_phases.png" alt="Task phases: approach, initial contact, insertion" style="width:100%;display:block;">
       </div>
       <div class="figure__caption">
         <strong>Task phases.</strong> Three common phases of fragile peg-in-hole: approach (free-space), initial contact (alignment), and insertion (descent). Each phase requires a different control strategy.
@@ -1114,7 +1114,7 @@
 
     <div class="figure">
       <div class="figure__content">
-        <img src="assets/fig3_selection.svg" alt="Force control selection probability across task phases">
+        <img src="assets/fig3_selection.svg" alt="Force control selection probability across task phases" style="width:100%;display:block;">
       </div>
       <div class="figure__caption">
         <strong>Learned selection strategy.</strong> Force control probability across approach, contact, and insertion phases. MATCH uses force control in 84±10.8% of in-contact steps and only 2.9±2.1% of free-space steps — consistent with common analytical approaches to peg-in-hole.

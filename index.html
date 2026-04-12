@@ -470,8 +470,9 @@
     .sim-carousel__header {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
-      padding: 0.6rem 1rem;
+      padding: 0.8rem 1rem;
       background: var(--color-code-bg);
       border-bottom: 1px solid var(--color-border);
     }
@@ -497,15 +498,22 @@
       background: var(--color-accent-light);
     }
 
+    .sim-carousel__header-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      width: calc(100% / 3);
+      max-width: 350px;
+    }
+
     .sim-carousel__holeview {
-      flex-shrink: 0;
-      width: 130px;
-      height: 130px;
+      width: 100%;
+      aspect-ratio: 1;
       border-radius: 6px;
       overflow: hidden;
       border: 1px solid var(--color-border);
       background: #fff;
-      position: relative;
     }
 
     .sim-carousel__holeview canvas {
@@ -515,9 +523,8 @@
 
     .sim-carousel__info {
       display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-      flex: 1;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .sim-carousel__badge {
@@ -1016,11 +1023,13 @@
         <button class="sim-carousel__btn" id="carouselPrev" aria-label="Previous condition">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <div class="sim-carousel__holeview">
-          <canvas id="holeCanvas" width="400" height="400"></canvas>
-        </div>
-        <div class="sim-carousel__info">
-          <span class="sim-carousel__badge" id="carouselBadge">Low Noise</span>
+        <div class="sim-carousel__header-center">
+          <div class="sim-carousel__holeview">
+            <canvas id="holeCanvas" width="400" height="400"></canvas>
+          </div>
+          <div class="sim-carousel__info">
+            <span class="sim-carousel__badge" id="carouselBadge">Low Noise</span>
+          </div>
         </div>
         <button class="sim-carousel__btn" id="carouselNext" aria-label="Next condition">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>

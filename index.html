@@ -1377,7 +1377,7 @@
         ctx.stroke();
 
         // Scale bar at bottom
-        const barY = H - fontMd * 2;
+        const barY = H - fontMd * 1.5;
         const barLen = 5 * scale;
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = lw * 1.33;
@@ -1389,13 +1389,13 @@
         ctx.beginPath(); ctx.moveTo(cx - barLen/2, barY-endH); ctx.lineTo(cx - barLen/2, barY+endH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx + barLen/2, barY-endH); ctx.lineTo(cx + barLen/2, barY+endH); ctx.stroke();
         ctx.fillStyle = '#fff';
-        ctx.font = 'bold ' + fontMd + 'px Source Sans 3, Arial, sans-serif';
+        ctx.font = 'bold ' + fontMd + 'px Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('5 mm', cx, barY + fontMd * 1.3);
 
         // Noise badge in top-right corner
         const badgeText = cond.noise_label + ' (' + cond.noise_mm + ' mm)';
-        ctx.font = 'bold ' + fontBadge + 'px Source Sans 3, Arial, sans-serif';
+        ctx.font = 'bold ' + fontBadge + 'px Arial, sans-serif';
         const badgeW = ctx.measureText(badgeText).width + fontBadge * 0.6;
         const badgeH = fontBadge * 1.5;
         const badgePad = W * 0.025;

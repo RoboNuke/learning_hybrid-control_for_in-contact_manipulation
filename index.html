@@ -903,28 +903,22 @@
       During training, noise is applied to the policy's observation of the hole position (σ=1mm Gaussian), end-effector position (σ=0.25mm), and force sensing (σ=1N). At evaluation, we test under increasing <strong>uniform localization noise</strong> on the hole position — up to ±7.5mm, nearly the full 8mm hole diameter.
     </p>
 
-    <!-- Noise condition top-down views -->
-    <div class="comparison-grid" style="grid-template-columns:repeat(4,1fr);">
-      <div class="comparison-grid__header">Low (0–1mm)</div>
-      <div class="comparison-grid__header">Medium (1–2.5mm)</div>
-      <div class="comparison-grid__header">High (2.5–5mm)</div>
-      <div class="comparison-grid__header">Very High (5–7.5mm)</div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_low_noise.png" alt="Low noise: hole location distribution">
+    <div class="figure">
+      <div class="figure__content" style="display:flex;align-items:center;gap:2px;background:var(--color-border);">
+        <div style="flex:1;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
+          <img src="assets/robot_solo.svg" alt="Franka FR3 robot setup" style="max-height:350px;width:auto;">
+        </div>
+        <div style="flex:1;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
+          <img src="assets/peg_hole_setup.svg" alt="3D-printed peg and hole" style="max-height:350px;width:auto;">
+        </div>
+        <div style="flex:2;background:#fff;display:flex;justify-content:center;padding:0.5rem;">
+          <img src="assets/error_levels.svg" alt="Evaluation noise levels for hole localization" style="max-height:350px;width:auto;">
+        </div>
       </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_med_noise.png" alt="Medium noise: hole location distribution">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_high_noise.png" alt="High noise: hole location distribution">
-      </div>
-      <div class="comparison-grid__cell">
-        <img src="assets/sim_hole_vhigh_noise.png" alt="Very high noise: hole location distribution">
+      <div class="figure__caption">
+        <strong>Experimental setup and evaluation conditions.</strong> (Left) Franka FR3 robot. (Center) 3D-printed peg and hole with ~0.5mm clearance. (Right) Top-down view of the hole with estimated position distributions at each noise level — at the highest setting, the estimated position can be off by nearly the entire hole diameter.
       </div>
     </div>
-    <p style="font-size:0.88rem;color:var(--color-text-muted);text-align:center;margin-top:0.5rem;">
-      <strong style="color:var(--color-text-secondary);">Evaluation noise conditions.</strong> Top-down view of the hole with the distribution of estimated hole locations at each noise level. At the highest setting, the estimated position can be off by nearly the entire hole diameter.
-    </p>
   </section>
 
   <!-- ===== SIM-TO-REAL ===== -->

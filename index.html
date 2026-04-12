@@ -1326,8 +1326,8 @@
         const holeRadius = 4 * scale; // 8mm diameter hole
         
         // Font sizes relative to canvas
-        const fontMd = Math.round(W * 0.09);
-        const fontBadge = Math.round(W * 0.11);
+        const fontMd = Math.round(W * 0.18);
+        const fontBadge = Math.round(W * 0.25);
         const lw = Math.max(2, W * 0.01);
 
         // White background
@@ -1365,7 +1365,7 @@
         // X marker at estimated center
         const xSize = W * 0.04;
         ctx.strokeStyle = '#fff';
-        ctx.lineWidth = lw * 3;
+        ctx.lineWidth = lw * 2;
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(px - xSize, py - xSize);
@@ -1380,12 +1380,12 @@
         const barY = H - fontMd * 2;
         const barLen = 5 * scale;
         ctx.strokeStyle = '#fff';
-        ctx.lineWidth = lw * 2;
+        ctx.lineWidth = lw * 1.33;
         ctx.beginPath();
         ctx.moveTo(cx - barLen/2, barY);
         ctx.lineTo(cx + barLen/2, barY);
         ctx.stroke();
-        const endH = lw * 3;
+        const endH = lw * 2;
         ctx.beginPath(); ctx.moveTo(cx - barLen/2, barY-endH); ctx.lineTo(cx - barLen/2, barY+endH); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(cx + barLen/2, barY-endH); ctx.lineTo(cx + barLen/2, barY+endH); ctx.stroke();
         ctx.fillStyle = '#fff';

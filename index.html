@@ -1206,13 +1206,21 @@
       </p>
     </div>
 
+    <p>
+      For each control dimension $i$, the policy outputs a selection probability $\phi_i$ parameterizing a Bernoulli over the binary mode variable $\Lambda_i$ (where $\Lambda_i = 1$ selects pose control and $\Lambda_i = 0$ selects force control). It also outputs pose target parameters $(\mu_i^x, \sigma_i^x)$ and force target parameters $(\mu_i^f, \sigma_i^f)$. The per-dimension action distribution $c(a_i)$ is then defined as:
+    </p>
+
     <div class="equation-block">
       $$c(a_i) = \begin{cases} p(\Lambda_i \mid \phi_i) \cdot p(x_i \mid \mu^x, \sigma^x) & \text{if } \Lambda_i = 1 \text{ (pose)} \\ (1 - p(\Lambda_i \mid \phi_i)) \cdot p(f_i \mid \mu^f, \sigma^f) & \text{if } \Lambda_i = 0 \text{ (force)} \end{cases}$$
     </div>
 
     <p>
-      We also introduce a <strong>Supervised Selection Loss (SSL)</strong> that uses binary cross-entropy between the selection probability and the true contact state. This provides gradient signal for force control exploration during early training, when the policy is rarely in contact and would otherwise avoid force control entirely.
+      Since early exploration occurs predominantly in free space — where force control risks unbounded acceleration — the policy quickly learns to avoid selecting force control entirely. This bias persists even after the policy begins making contact, as only 20–40% of training steps involve contact. To counteract this, we introduce a <strong>Supervised Selection Loss (SSL)</strong> that encourages exploring force actions when contact becomes more frequent. SSL is defined as the binary cross-entropy between the selection probability $p(\Lambda_i)$ and the true contact state $\psi_i$ in each control dimension:
     </p>
+
+    <div class="equation-block">
+      $$\mathcal{L}_{\text{SSL}} = \sum_i \text{BCE}(p(\Lambda_i), \psi_i)$$
+    </div>
   </section>
 
   <!-- ===== CITATION ===== -->

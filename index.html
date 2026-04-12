@@ -1132,7 +1132,7 @@
         <img src="assets/fig2_learning_curves.svg" alt="Learning efficiency comparison">
       </div>
       <div class="figure__caption">
-        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower. This is partially due to SSL encouraging force exploration at every stage of training.
+        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower. This is mainly due the no-SSL policies degenerating to using only pose control and not exploring effective force actions. SSL provides a continuous signal in training that encourages exploration of force actions. Together with MATCH's action distribution we capture the data efficiency of the much simpler pose-only control.
       </div>
     </div>
   </section>

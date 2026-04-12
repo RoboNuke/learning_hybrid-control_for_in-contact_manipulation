@@ -718,6 +718,16 @@
       color: var(--color-text-secondary);
     }
 
+    @media (max-width: 768px) {
+      .results-table {
+        font-size: 0.75rem;
+      }
+      .results-table th,
+      .results-table td {
+        padding: 0.4rem 0.3rem;
+      }
+    }
+
     .results-table td:first-child {
       text-align: left;
       font-weight: 600;
@@ -1043,7 +1053,7 @@
 
     <!-- Table I -->
     <div class="figure" style="margin-top:2rem;">
-      <div class="figure__content" style="overflow-x:auto;padding:1rem;">
+      <div class="figure__content" style="padding:1rem;">
         <table class="results-table">
           <thead>
             <tr>

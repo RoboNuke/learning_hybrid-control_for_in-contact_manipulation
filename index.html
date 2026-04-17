@@ -1267,34 +1267,39 @@
     }
 
     // ===== Simulation Carousel =====
-    (function() {
-      // Generate placeholder data: 20 conditions across noise levels
-      // Replace this with your real data JSON later
-      const conditions = [];
-      const levels = [
-        { name: 'Low', key: 'low', range: [0, 1], count: 5, color: '#2d8a4e' },
-        { name: 'Medium', key: 'med', range: [1, 2.5], count: 5, color: '#c9922e' },
-        { name: 'High', key: 'high', range: [2.5, 5], count: 5, color: '#d35f2a' },
-        { name: 'Very High', key: 'vhigh', range: [5, 7.5], count: 5, color: '#c0392b' }
-      ];
+    (async function() {
+      const levelMap = {
+        'low':   { name: 'Low',       color: '#2d8a4e' },
+        'med':   { name: 'Medium',    color: '#c9922e' },
+        'high':  { name: 'High',      color: '#d35f2a' },
+        'vhigh': { name: 'Very High', color: '#c0392b' }
+      };
 
-      let id = 1;
-      levels.forEach(level => {
-        for (let i = 0; i < level.count; i++) {
-          const mag = level.range[0] + Math.random() * (level.range[1] - level.range[0]);
-          const angle = Math.random() * Math.PI * 2;
-          conditions.push({
-            id: id++,
-            noise_level: level.key,
-            noise_label: level.name,
-            noise_color: level.color,
-            noise_mm: +mag.toFixed(2),
-            offset_x: +(mag * Math.cos(angle)).toFixed(2),
-            offset_y: +(mag * Math.sin(angle)).toFixed(2),
-            offset_z: +((Math.random() - 0.5) * mag * 0.6).toFixed(2)
-          });
-        }
-      });
+      // Load real conditions data
+      let conditions;
+      try {
+        const resp = await fetch('assets/sim/conditions.json');
+        conditions = await resp.json();
+        conditions.forEach(c => {
+          c.noise_label = levelMap[c.noise_level].name;
+          c.noise_color = levelMap[c.noise_level].color;
+        });
+      } catch(e) {
+        console.warn('Could not load conditions.json, using placeholder data');
+        conditions = [];
+        let id = 1;
+        [['low',0,1,5],['med',1,2.5,5],['high',2.5,5,5],['vhigh',5,7.5,5]].forEach(([key,lo,hi,n]) => {
+          for (let i = 0; i < n; i++) {
+            const mag = lo + Math.random() * (hi - lo);
+            const angle = Math.random() * Math.PI * 2;
+            conditions.push({
+              id: id++, noise_level: key, noise_label: levelMap[key].name, noise_color: levelMap[key].color,
+              noise_mm: +mag.toFixed(2), offset_x: +(mag*Math.cos(angle)).toFixed(2),
+              offset_y: +(mag*Math.sin(angle)).toFixed(2), offset_z: +((Math.random()-0.5)*mag*0.6).toFixed(2)
+            });
+          }
+        });
+      }
 
       const TOTAL = conditions.length;
       let current = 0;
@@ -1306,7 +1311,7 @@
       const segContainer = document.getElementById('carouselSegments');
 
       // Build progress segments
-      levels.forEach(l => {
+      ['low','med','high','vhigh'].forEach(() => {
         const seg = document.createElement('div');
         seg.className = 'sim-carousel__progress-seg';
         segContainer.appendChild(seg);
@@ -1452,9 +1457,13 @@
         });
 
         // Try to play all videos synced
-        const playPromises = methods.map(m => {
+        methods.forEach(m => {
           videos[m].currentTime = 0;
-          return videos[m].play().catch(() => {});
+          videos[m].play().then(() => {
+            if (placeholders[m]) placeholders[m].style.display = 'none';
+          }).catch(() => {
+            if (placeholders[m]) placeholders[m].style.display = 'flex';
+          });
         });
       }
 

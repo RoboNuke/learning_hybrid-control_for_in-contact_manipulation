@@ -594,10 +594,11 @@
 
     .sim-carousel__progress-track {
       position: relative;
-      height: 4px;
+      height: 10px;
       background: var(--color-code-bg);
-      border-radius: 2px;
+      border-radius: 5px;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .sim-carousel__progress-fill {
@@ -605,8 +606,8 @@
       top: 0; left: 0;
       height: 100%;
       background: var(--color-accent);
-      border-radius: 2px;
-      transition: width 0.2s;
+      border-radius: 5px;
+      transition: width 0.2s, background 0.2s;
     }
 
     .sim-carousel__progress-segments {
@@ -1490,6 +1491,14 @@
 
       // Initialize
       updateCarousel();
+
+      // Click progress bar to jump
+      document.querySelector('.sim-carousel__progress-track').addEventListener('click', (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        current = Math.min(Math.floor(pct * TOTAL), TOTAL - 1);
+        updateCarousel();
+      });
     })();
   </script>
 </body>

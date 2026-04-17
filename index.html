@@ -1278,7 +1278,7 @@
       // Load real conditions data
       let conditions;
       try {
-        const resp = await fetch('assets/sim/conditions.json');
+        const resp = await fetch('assets/sim/conditions.json?v=2');
         conditions = await resp.json();
         conditions.forEach(c => {
           c.noise_label = levelMap[c.noise_level].name;

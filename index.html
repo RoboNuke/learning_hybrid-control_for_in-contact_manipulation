@@ -1290,7 +1290,8 @@
             noise_color: level.color,
             noise_mm: +mag.toFixed(2),
             offset_x: +(mag * Math.cos(angle)).toFixed(2),
-            offset_y: +(mag * Math.sin(angle)).toFixed(2)
+            offset_y: +(mag * Math.sin(angle)).toFixed(2),
+            offset_z: +((Math.random() - 0.5) * mag * 0.6).toFixed(2)
           });
         }
       });
@@ -1415,6 +1416,13 @@
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + fontBadge * 1.1);
+
+        // Z offset annotation in bottom-left corner
+        const zText = 'z: ' + (cond.offset_z >= 0 ? '+' : '') + cond.offset_z + ' mm';
+        ctx.font = 'bold ' + fontMd + 'px Arial, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(zText, badgePad, badgeY + fontMd * 1.1);
       }
 
       function updateCarousel() {

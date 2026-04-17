@@ -599,6 +599,12 @@
       border-radius: 5px;
       overflow: hidden;
       cursor: pointer;
+      transition: height 0.15s, box-shadow 0.15s;
+    }
+
+    .sim-carousel__progress-track:hover {
+      height: 14px;
+      box-shadow: 0 0 0 2px var(--color-border);
     }
 
     .sim-carousel__progress-fill {
@@ -874,9 +880,9 @@
     <div class="hero__affiliation"><a href="https://engineering.oregonstate.edu/research/CoRIS" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--color-border);transition:border-color 0.2s;">Oregon State University</a></div>
 
     <div class="hero__links">
-      <a href="#" class="btn btn--primary">
+      <a href="#" class="btn btn--secondary" style="opacity:0.5;pointer-events:none;" title="Coming soon">
         <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
-        Paper (arXiv)
+        Paper (Coming Soon)
       </a>
       <a href="https://github.com/RoboNuke/Continuous_Force_RL" class="btn btn--secondary">
         <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -889,7 +895,6 @@
   <div class="teaser">
     <h2 class="section__title" style="text-align:center;display:block;margin-bottom:1rem;">MATCH: Mode-Aware Training for Contact Handling</h2>
     <div class="teaser__figure">
-      <!-- Replace with your teaser image/GIF -->
       <video autoplay muted loop playsinline style="width:100%;display:block;">
         <source src="assets/overview_video.mp4" type="video/mp4">
       </video>
@@ -1015,7 +1020,7 @@
   <section class="wide">
     <h2 class="section__title">Simulation Experiments</h2>
     <p>
-      We evaluate all methods in simulation across the four noise levels described above. Each of five seeds were evaluated across 500 episodes per noise condition.
+      We evaluate all methods in simulation across the four noise levels described above. Each of five seeds was evaluated across 500 episodes per noise condition.
     </p>
 
     <!-- Interactive Simulation Carousel -->
@@ -1132,7 +1137,7 @@
         <img src="assets/fig2_learning_curves.svg" alt="Learning efficiency comparison">
       </div>
       <div class="figure__caption">
-        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower. This is mainly due the no-SSL policies degenerating to using only pose control and not exploring effective force actions. SSL provides a continuous signal in training that encourages exploration of force actions. Together with MATCH's action distribution we capture the data efficiency of the much simpler pose-only control.
+        <strong>Learning efficiency.</strong> MATCH trains comparably to Pose and VICES while Hybrid-Basic requires considerably more data. Ablations lacking the supervised selection loss (no-SSL) learn substantially slower. This is mainly due to the no-SSL policies degenerating to using only pose control and not exploring effective force actions. SSL provides a continuous signal in training that encourages exploration of force actions. Together with MATCH's action distribution we capture the data efficiency of the much simpler pose-only control.
       </div>
     </div>
   </section>
@@ -1479,13 +1484,18 @@
       });
 
       document.addEventListener('keydown', (e) => {
-        // Only respond if carousel is somewhat in view
+        const el = document.getElementById('simCarousel');
+        const rect = el.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!inView) return;
         if (e.key === 'ArrowLeft') {
           current = (current - 1 + TOTAL) % TOTAL;
           updateCarousel();
+          e.preventDefault();
         } else if (e.key === 'ArrowRight') {
           current = (current + 1) % TOTAL;
           updateCarousel();
+          e.preventDefault();
         }
       });
 

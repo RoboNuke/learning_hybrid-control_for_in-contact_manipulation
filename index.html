@@ -1417,12 +1417,12 @@
         ctx.textAlign = 'center';
         ctx.fillText(badgeText, badgeX + badgeW/2, badgeY + fontBadge * 1.1);
 
-        // Z offset annotation in bottom-left corner
+        // Z offset annotation in bottom-right corner
         const zText = 'z: ' + (cond.offset_z >= 0 ? '+' : '') + cond.offset_z + ' mm';
         ctx.font = 'bold ' + fontMd + 'px Arial, sans-serif';
-        ctx.textAlign = 'left';
+        ctx.textAlign = 'right';
         ctx.fillStyle = '#fff';
-        ctx.fillText(zText, badgePad, badgeY + fontMd * 1.1);
+        ctx.fillText(zText, W - badgePad, H - badgePad);
       }
 
       function updateCarousel() {
